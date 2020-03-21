@@ -6,7 +6,7 @@ COPY src/requirements.txt ./requirements.txt
 COPY requirements_local.txt ./requirements_local.txt
 RUN pip install -r ./requirements.txt -r ./requirements_local.txt
 
-FROM python:3.6-alpine as release
+FROM base as release
 
 ARG FLASK_ENV
 ENV FLASK_ENV=${FLASK_ENV}
