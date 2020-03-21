@@ -38,6 +38,10 @@ or
 python src/main.py 
 ```
 
+## Swagger Doc
+http://127.0.0.1:5000/data_api/v1/
+
+
 ## Setup database
 ___
 
