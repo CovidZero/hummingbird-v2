@@ -130,3 +130,11 @@ dmypy.json
 
 
 .idea
+
+
+# Database
+local_migrations
+src/app.db
+
+
+.DS_Store

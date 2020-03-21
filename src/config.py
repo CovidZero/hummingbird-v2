@@ -8,6 +8,10 @@ class DefaultConfig(object):
     BUNDLE_ERRORS = True
     PROPAGATE_EXCEPTIONS = True
 
+    # Database
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 class DevelopmentConfig(DefaultConfig):
     ...
