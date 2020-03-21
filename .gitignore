@@ -138,3 +138,8 @@ src/app.db
 
 
 .DS_Store
+
+
+# TESTS
+src/test_data/test.db
+

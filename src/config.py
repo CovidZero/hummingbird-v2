@@ -19,6 +19,7 @@ class DevelopmentConfig(DefaultConfig):
 
 class TestingConfig(DefaultConfig):
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test_data/test.db')
 
 
 class StagingConfig(DefaultConfig):
