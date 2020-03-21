@@ -1,4 +1,4 @@
-****# hummingbird-v2
+# Hummingbird V2
 
 
 ## Project Resources
@@ -59,8 +59,6 @@ ___
 ```
 export FLASK_ENV=testing
 
-python -m unittest discover -s tests
-or
 python tests/runner.py
 ```
 
