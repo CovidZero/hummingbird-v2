@@ -42,7 +42,7 @@ python src/main.py
 http://127.0.0.1:5000/data_api/v1/
 
 
-## Setup database
+## Setup database 
 ___
 
 - Local
@@ -51,5 +51,16 @@ export FLASK_ENV=development
 flask db init --directory=local_migrations
 flask db migrate --directory=local_migrations
 flask db upgrade --directory=local_migrations   
+```
+
+
+## Tests
+___
+```
+export FLASK_ENV=testing
+
+python -m unittest discover -s tests
+or
+python tests/runner.py
 ```
 

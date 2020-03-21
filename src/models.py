@@ -8,8 +8,9 @@ class SomeModel(db.Model):
     name = db.Column(db.Integer, nullable=False)
 
     def save(self, session, **kwargs):
-        credential = SomeModel(
+        model = SomeModel(
+            id=kwargs['id'],
             name=kwargs['name']
         )
-        session.add(credential)
-        return credential
+        session.add(model)
+        return model
