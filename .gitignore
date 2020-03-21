@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+.idea
+
+
+# Database
+local_migrations
+src/app.db
+
+
+.DS_Store
