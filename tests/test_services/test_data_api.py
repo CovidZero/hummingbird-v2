@@ -62,3 +62,33 @@ class TestDataApi(TestCase):
         assert data['suspectedCases'] == 70
         assert data['recoveredCases'] == 2
         assert data['deaths'] == 3
+
+    def test_return_all_cases(self):
+        #generate test data
+        City().save(self.db.session, city="c1", state="s1", country="c1", total_cases=20, suspects=5, refuses=3, deaths=2, recovered=1)
+
+        City().save(self.db.session, city="c2", state="s2", country="c1", total_cases=20, suspects=5, refuses=3, deaths=2, recovered=1)
+
+        self.db.session.commit()
+
+        #act
+        resp = self.client.get('/data_api/v1/data/all')
+        data = json.loads(resp.get_data(as_text=True))
+
+        #assert
+        assert len(data) == 4
+        
+        assert 'activeCases' in data
+        assert 'suspectedCases' in data
+        assert 'recoveredCases' in data
+        assert 'deaths' in data
+
+        assert data['activeCases'] == 18
+        assert data['suspectedCases'] == 10
+        assert data['recoveredCases'] == 2
+        assert data['deaths'] == 4
+
+
+
+
+
