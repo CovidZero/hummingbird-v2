@@ -1,4 +1,4 @@
-from models import City
+from models import City,CasesLocation
 from sqlalchemy.sql import or_
 
 class ReportService():
@@ -33,8 +33,11 @@ class ReportService():
             state=uf).all()
 
         return compileCases(citySituation)
+    
+    def getCasesNearLocation(self, latitude, longitude):
+        todos_casos = CasesLocation.query.all()
 
-
+        return compileCasesNearLocation(todos_casos)
 
 def compileCases(data):
     activeCases = sum([(city.total_cases - city.suspects - city.refuses -
@@ -51,3 +54,18 @@ def compileCases(data):
         'recoveredCases': recoveredCases,
         'deaths': deaths
     }
+
+def compileCasesNearLocation(data):
+    activeCases = 0
+    suspectedCases = 0
+    recoveredCases = 0
+    deaths = 0
+
+    for case in data:
+        return {
+            'status': case.status,
+            'location':{
+                'latitude':case.longitude,
+                'longitude':case.latitude
+            }
+        }
