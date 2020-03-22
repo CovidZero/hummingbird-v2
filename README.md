@@ -67,3 +67,8 @@ export FLASK_ENV=testing
 python tests/runner.py
 ```
 
+## To run Flake 8 For Style Guide Enforcement
+___
+```
+flake8 src
+```

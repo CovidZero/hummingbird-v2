@@ -19,5 +19,6 @@ test_point_endpoints.bind(client_api)
 
 
 def load_apis(app):
-    app.register_blueprint(client_api.blueprint, url_prefix='/data_api/v1')
-
+    app.register_blueprint(
+        client_api.blueprint, url_prefix='/data_api/v1'
+    )

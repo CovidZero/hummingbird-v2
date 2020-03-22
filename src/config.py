@@ -22,7 +22,8 @@ class DefaultConfig(object):
     AUTH_PASSWORD = '477FABBF689B7'
 
     # JWT CONFIG
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'kECVeGbqnkGvAscsFreoH8SSUXdd7gve')
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY',
+                               'kECVeGbqnkGvAscsFreoH8SSUXdd7gve')
     JWT_TOKEN_LOCATION = ['headers']
     JWT_HEADER_NAME = 'Authorization'
     JWT_HEADER_TYPE = 'Bearer'
@@ -35,7 +36,8 @@ class DevelopmentConfig(DefaultConfig):
 
 class TestingConfig(DefaultConfig):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test_data/test.db')
+    SQLALCHEMY_DATABASE_URI = \
+        'sqlite:///'+os.path.join(basedir, 'test_data/test.db')
 
 
 class StagingConfig(DefaultConfig):
@@ -48,12 +50,12 @@ class ProductionConfig(DefaultConfig):
 
     # AUTHORIZATION
     # TODO: Create these credentials
-    #AUTH_USERNAME = ''
-    #AUTH_PASSWORD = ''
+    # AUTH_USERNAME = ''
+    # AUTH_PASSWORD = ''
 
     # JWT CONFIG
     # TODO: Setup a secret key
-    #JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', '')
+    # JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', '')
     JWT_ACCESS_TOKEN_EXPIRES = 3600
 
 
