@@ -1,10 +1,13 @@
 from app import app
 from custom_exceptions.auth_exceptions import BadUsernameOrPassword
-from flask_jwt_extended import (create_access_token, create_refresh_token, get_jwt_identity)
+from flask_jwt_extended import (
+    create_access_token, create_refresh_token, get_jwt_identity
+)
 
 
 def create_tokens(data):
-    if data['username'] != app.config['AUTH_USERNAME'] or data['password'] != app.config['AUTH_PASSWORD']:
+    if data['username'] != app.config['AUTH_USERNAME'] or \
+            data['password'] != app.config['AUTH_PASSWORD']:
         raise BadUsernameOrPassword()
     access_token = create_access_token(identity=data['username'])
     refresh_token = create_refresh_token(identity=data['username'])
