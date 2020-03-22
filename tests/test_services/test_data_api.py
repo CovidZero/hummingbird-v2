@@ -97,7 +97,7 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/search/c1')
+        resp = self.client.get('/data_api/v1/data/search?query=c1')
         data = json.loads(resp.get_data())
 
         city_data1 = data[0]
@@ -120,7 +120,7 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/search/s2')
+        resp = self.client.get('/data_api/v1/data/search?query=s2')
         data = json.loads(resp.get_data())
 
         city_data1 = data[0]
@@ -144,7 +144,7 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/search/s2')
+        resp = self.client.get('/data_api/v1/data/search?query=s2')
         data = json.loads(resp.get_data())
 
         city_data1 = data[0]

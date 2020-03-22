@@ -1,5 +1,6 @@
 from flask_restplus import Namespace, Resource
 from apis.data.services import ReportService
+from flask import request
 
 my_api = Namespace('data', description='Data related operations')
 
@@ -27,10 +28,11 @@ class GetAllCases(Resource):
         """Obter todos os casos confirmados, suspeitos, recuperados e óbitos"""
         return ReportService.getAllCityCases(self)
 
-@my_api.route('/search/<string:query>')
+@my_api.route('/search')
 class GetCasesFromSearch(Resource):
-    def get(self, query):
+    def get(self):
         """Obter todos os casos confirmados, suspeitos, recuperados e óbitos por cidade baseados em pesquisa pelo termo"""
+        query = request.args.get('query')
         return ReportService.searchCityCases(self, query)
 
 
