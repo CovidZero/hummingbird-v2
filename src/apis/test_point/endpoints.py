@@ -6,17 +6,17 @@ my_api = Namespace('test_point', description='Test point related operations')
 
 
 @my_api.route('/all')
-class GetAllCases(Resource):
+class GetAllTestPoints(Resource):
     @my_api.doc('all')
     def get(self):
-        """Obter todos os casos confirmados, suspeitos, recuperados e óbitos"""
+        """Get all test points"""
         return TestPointService.getAll(self)
 
 @my_api.route('/city/<string:city>')
-class GetStateSituation(Resource):
+class GetTestPointsByCity(Resource):
     @my_api.doc('by_city')
     def get(self, city):
-        """Get all tests_points from city"""
+        """Get tests points by city"""
         return TestPointService.getByCity(self,city)
 
 

@@ -48,3 +48,9 @@ class TestTestPointApi(TestCase):
 
         assert len(data) == 1
 
+    def test_test_points_not_found(self):
+
+            resp = self.client.get('/data_api/v1/test_point/city/city_not_exist')
+            data = json.loads(resp.get_data(as_text=True))
+
+            assert len(data) == 0
