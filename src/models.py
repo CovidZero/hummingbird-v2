@@ -70,3 +70,31 @@ class StatesPerDay(db.Model):
                              )
         session.add(model)
         return model
+
+class TestPoint(db.Model):
+    __tablename__ = 'TEST_POINT'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    city = db.Column(db.String(255), nullable=False)
+    zip_code = db.Column(db.String(255))
+    latitude = db.Column(db.Float(asdecimal=True), nullable=False)
+    longitude = db.Column(db.Float(asdecimal=True), nullable=False)
+
+    def save(self, session, **kwargs):
+        model = TestPoint(**kwargs)
+        session.add(model)
+        return model
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+           'id': self.id,
+           'name': self.name,
+           'address':self.address,
+           'city':self.city,
+           'zip_code': self.zip_code,
+           'latitude' : float(self.latitude),
+           'longitude' : float(self.longitude)
+       }
