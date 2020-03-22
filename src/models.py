@@ -115,7 +115,6 @@ class CasesLocation(db.Model):
     latitude = db.Column(db.Float)
 
     def save(self, session, **kwargs):
-        model = CasesLocation(**kwargs
-                     )
+        model = CasesLocation(**kwargs)
         session.add(model)
         return model

@@ -31,13 +31,15 @@ class GetCasesFromSearch(Resource):
         query = request.args.get('query')
         return ReportService().search_city_cases(query)
 
+
 @my_api.route('/cases_location')
 class GetCasesNearLocation(Resource):
     def get(self):
         latitude = request.args.get('lat', None)
         longitude = request.args.get('lng', None)
-        """Obter um array de casos de COVID-19 próximos a latitude e long do usuario"""
-        return ReportService.getCasesNearLocation(self, latitude, longitude)
+        "Obter um array de casos de COVID-19 " \
+            "próximos a latitude e long do usuario"
+        return ReportService().get_cases_near_location(latitude, longitude)
 
 
 def bind(api):
