@@ -3,47 +3,47 @@ from sqlalchemy.sql import or_
 
 class ReportService():
 
-    def searchCityCases(self, termo):
-        casos = City.query.filter(or_(City.city.like('%'+termo+'%'), City.state.like('%'+termo+'%'))).all()
+    def searchCityCases(self, query):
+        cases = City.query.filter(or_(City.city.like('%'+query+'%'), City.state.like('%'+query+'%'))).all()
 
         result = []
 
-        for caso in casos:
-            casos_ativos = caso.total_cases - caso.suspects - caso.refuses - caso.deaths - caso.recovered
-            dado_atual = {
-            'city': caso.city,
-            'state': caso.state,
+        for case in cases:
+            activeCases = case.total_cases - case.suspects - case.refuses - case.deaths - case.recovered
+            currentCase = {
+            'city': case.city,
+            'state': case.state,
             'cases': {
-                'activeCases': casos_ativos,
-                'suspectedCases': caso.suspects,
-                'recoveredCases': caso.recovered,
-                'deaths': caso.deaths
+                'activeCases': activeCases,
+                'suspectedCases': case.suspects,
+                'recoveredCases': case.recovered,
+                'deaths': case.deaths
             }}
-            result.append(dado_atual)
+            result.append(currentCase)
 
         return result
     
     def getAllCityCases(self):
-        todos_casos = City.query.all()
+        todos_cases = City.query.all()
 
-        return compileCases(todos_casos)
+        return compileCases(todos_cases)
 
-    def searchCityCasesByState(self, sigla):
-        situacao_cidades = City.query.filter_by(
-            state=sigla).all()
+    def searchCityCasesByState(self, uf):
+        citySituation = City.query.filter_by(
+            state=uf).all()
 
-        return compileCases(situacao_cidades)
+        return compileCases(citySituation)
 
 
 
-def compileCases(dados):
-    activeCases = sum([(cidade.total_cases - cidade.suspects - cidade.refuses -
-                    cidade.deaths - cidade.recovered) for cidade in dados]) or 0
+def compileCases(data):
+    activeCases = sum([(city.total_cases - city.suspects - city.refuses -
+                    city.deaths - city.recovered) for city in data]) or 0
     suspectedCases = sum(
-        [cidade.suspects for cidade in dados]) or 0
+        [city.suspects for city in data]) or 0
     recoveredCases = sum(
-        [cidade.recovered for cidade in dados]) or 0
-    deaths = sum([cidade.deaths for cidade in dados]) or 0
+        [city.recovered for city in data]) or 0
+    deaths = sum([city.deaths for city in data]) or 0
 
     return {
         'activeCases': activeCases,

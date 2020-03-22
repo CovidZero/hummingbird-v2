@@ -13,12 +13,12 @@ class GetFooBar(Resource):
         return {'ok': status}
 
 
-@my_api.route('/state/<string:sigla>')
+@my_api.route('/state/<string:uf>')
 class GetStateSituation(Resource):
     @my_api.doc('by_state')
-    def get(self, sigla):
+    def get(self, uf):
         """Obter todos os casos confirmados, suspeitos, recuperados e óbitos de um Estado"""
-        return ReportService.searchCityCasesByState(self,sigla)
+        return ReportService.searchCityCasesByState(self,uf)
 
 @my_api.route('/all')
 class GetAllCases(Resource):
@@ -27,11 +27,11 @@ class GetAllCases(Resource):
         """Obter todos os casos confirmados, suspeitos, recuperados e óbitos"""
         return ReportService.getAllCityCases(self)
 
-@my_api.route('/search/<string:termo>')
+@my_api.route('/search/<string:query>')
 class GetCasesFromSearch(Resource):
-    def get(self, termo):
+    def get(self, query):
         """Obter todos os casos confirmados, suspeitos, recuperados e óbitos por cidade baseados em pesquisa pelo termo"""
-        return ReportService.searchCityCases(self, termo)
+        return ReportService.searchCityCases(self, query)
 
 
 

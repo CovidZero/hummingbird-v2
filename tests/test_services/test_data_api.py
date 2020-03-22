@@ -100,16 +100,16 @@ class TestDataApi(TestCase):
         resp = self.client.get('/data_api/v1/data/search/c1')
         data = json.loads(resp.get_data())
 
-        dados_cidade1 = data[0]
+        city_data1 = data[0]
 
         #assert
         assert len(data) == 1
-        assert dados_cidade1['city'] == "c1"
-        assert dados_cidade1['state'] == "s1"
-        assert dados_cidade1['cases']['activeCases'] == 9
-        assert dados_cidade1['cases']['suspectedCases'] == 5
-        assert dados_cidade1['cases']['recoveredCases'] == 1
-        assert dados_cidade1['cases']['deaths'] == 2
+        assert city_data1['city'] == "c1"
+        assert city_data1['state'] == "s1"
+        assert city_data1['cases']['activeCases'] == 9
+        assert city_data1['cases']['suspectedCases'] == 5
+        assert city_data1['cases']['recoveredCases'] == 1
+        assert city_data1['cases']['deaths'] == 2
 
     def test_return_cases_by_search_state(self):
         #generate test data
@@ -123,16 +123,16 @@ class TestDataApi(TestCase):
         resp = self.client.get('/data_api/v1/data/search/s2')
         data = json.loads(resp.get_data())
 
-        dados_cidade1 = data[0]
+        city_data1 = data[0]
 
         #assert
         assert len(data) == 1
-        assert dados_cidade1['city'] == "c2"
-        assert dados_cidade1['state'] == "s2"
-        assert dados_cidade1['cases']['activeCases'] == 9
-        assert dados_cidade1['cases']['suspectedCases'] == 5
-        assert dados_cidade1['cases']['recoveredCases'] == 1
-        assert dados_cidade1['cases']['deaths'] == 2
+        assert city_data1['city'] == "c2"
+        assert city_data1['state'] == "s2"
+        assert city_data1['cases']['activeCases'] == 9
+        assert city_data1['cases']['suspectedCases'] == 5
+        assert city_data1['cases']['recoveredCases'] == 1
+        assert city_data1['cases']['deaths'] == 2
 
     def test_return_cases_by_search_multiple_cities(self):
         #generate test data
@@ -147,24 +147,24 @@ class TestDataApi(TestCase):
         resp = self.client.get('/data_api/v1/data/search/s2')
         data = json.loads(resp.get_data())
 
-        dados_cidade1 = data[0]
-        dados_cidade2 = data[1]
+        city_data1 = data[0]
+        city_data2 = data[1]
 
         #assert
         assert len(data) == 2
-        assert dados_cidade1['city'] == "c2"
-        assert dados_cidade1['state'] == "s2"
-        assert dados_cidade1['cases']['activeCases'] == 9
-        assert dados_cidade1['cases']['suspectedCases'] == 5
-        assert dados_cidade1['cases']['recoveredCases'] == 1
-        assert dados_cidade1['cases']['deaths'] == 2
+        assert city_data1['city'] == "c2"
+        assert city_data1['state'] == "s2"
+        assert city_data1['cases']['activeCases'] == 9
+        assert city_data1['cases']['suspectedCases'] == 5
+        assert city_data1['cases']['recoveredCases'] == 1
+        assert city_data1['cases']['deaths'] == 2
 
-        assert dados_cidade2['city'] == "c3"
-        assert dados_cidade2['state'] == "s2"
-        assert dados_cidade2['cases']['activeCases'] == 9
-        assert dados_cidade2['cases']['suspectedCases'] == 5
-        assert dados_cidade2['cases']['recoveredCases'] == 1
-        assert dados_cidade2['cases']['deaths'] == 2
+        assert city_data2['city'] == "c3"
+        assert city_data2['state'] == "s2"
+        assert city_data2['cases']['activeCases'] == 9
+        assert city_data2['cases']['suspectedCases'] == 5
+        assert city_data2['cases']['recoveredCases'] == 1
+        assert city_data2['cases']['deaths'] == 2
 
 
 
