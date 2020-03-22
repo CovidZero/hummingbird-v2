@@ -24,9 +24,9 @@ class ReportService():
         return result
     
     def getAllCityCases(self):
-        todos_cases = City.query.all()
+        all_cases = City.query.all()
 
-        return compileCases(todos_cases)
+        return compileCases(all_cases)
 
     def searchCityCasesByState(self, uf):
         citySituation = City.query.filter_by(
