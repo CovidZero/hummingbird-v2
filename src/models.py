@@ -70,3 +70,18 @@ class StatesPerDay(db.Model):
                              )
         session.add(model)
         return model
+
+class TestPoint(db.Model):
+    __tablename__ = 'TEST_POINT'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    city = db.Column(db.String(255), nullable=False)
+    zip_code = db.Column(db.String(255))
+    latitude = db.Column(db.Float(asdecimal=True), nullable=False)
+    longitude = db.Column(db.Float(asdecimal=True), nullable=False)
+
+    def save(self, session, **kwargs):
+        model = TestPoint(**kwargs)
+        session.add(model)
+        return model
