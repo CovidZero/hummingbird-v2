@@ -22,20 +22,33 @@ class GetStateSituation(Resource):
         situacao_cidades = City.query.filter_by(
             state=sigla).all()
 
-        activeCases = sum([(cidade.total_cases - cidade.suspects - cidade.refuses -
-                            cidade.deaths - cidade.recovered) for cidade in situacao_cidades]) or 0
-        suspectedCases = sum(
-            [cidade.suspects for cidade in situacao_cidades]) or 0
-        recoveredCases = sum(
-            [cidade.recovered for cidade in situacao_cidades]) or 0
-        deaths = sum([cidade.deaths for cidade in situacao_cidades]) or 0
+        return compile_cases(situacao_cidades)
 
-        return {
-            'activeCases': activeCases,
-            'suspectedCases': suspectedCases,
-            'recoveredCases': recoveredCases,
-            'deaths': deaths
-        }
+@my_api.route('/all')
+class GetAllCases(Resource):
+    @my_api.doc('all')
+    def get(self):
+        """Obter todos os casos confirmados, suspeitos, recuperados e óbitos"""
+        todos_casos = City.query.all()
+
+        return compile_cases(todos_casos)
+
+
+def compile_cases(dados):
+    activeCases = sum([(cidade.total_cases - cidade.suspects - cidade.refuses -
+                    cidade.deaths - cidade.recovered) for cidade in dados]) or 0
+    suspectedCases = sum(
+        [cidade.suspects for cidade in dados]) or 0
+    recoveredCases = sum(
+        [cidade.recovered for cidade in dados]) or 0
+    deaths = sum([cidade.deaths for cidade in dados]) or 0
+
+    return {
+        'activeCases': activeCases,
+        'suspectedCases': suspectedCases,
+        'recoveredCases': recoveredCases,
+        'deaths': deaths
+    }
 
 
 def bind(api):
