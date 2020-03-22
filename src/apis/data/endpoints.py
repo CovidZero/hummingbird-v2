@@ -4,16 +4,6 @@ from flask import request
 
 my_api = Namespace('data', description='Data related operations')
 
-
-@my_api.route('/foo_bar')
-class GetFooBar(Resource):
-    @my_api.doc('foo_bar')
-    def get(self):
-        """Check Unique Payment"""
-        status = True
-        return {'ok': status}
-
-
 @my_api.route('/state/<string:uf>')
 class GetStateSituation(Resource):
     @my_api.doc('by_state')
@@ -34,10 +24,6 @@ class GetCasesFromSearch(Resource):
         """Obter todos os casos confirmados, suspeitos, recuperados e óbitos por cidade baseados em pesquisa pelo termo"""
         query = request.args.get('query')
         return ReportService.searchCityCases(self, query)
-
-
-
-
 
 
 def bind(api):
