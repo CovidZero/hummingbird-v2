@@ -28,4 +28,3 @@ def setup_database_migration(_app, _db):
 app = setup_app()
 jwt = setup_jwt_auth(app)
 db = setup_database(app)
-

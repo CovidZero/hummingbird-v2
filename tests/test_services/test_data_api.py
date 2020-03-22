@@ -1,8 +1,6 @@
-import datetime
 import json
 from unittest import TestCase
 from app import app, db
-from mock import patch
 from models import City,CasesLocation
 from tests.runner import clear_db
 
