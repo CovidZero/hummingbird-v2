@@ -85,3 +85,16 @@ class TestPoint(db.Model):
         model = TestPoint(**kwargs)
         session.add(model)
         return model
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+           'id': self.id,
+           'name': self.name,
+           'address':self.address,
+           'city':self.city,
+           'zip_code': self.zip_code,
+           'latitude' : float(self.latitude),
+           'longitude' : float(self.longitude)
+       }
