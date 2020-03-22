@@ -28,7 +28,7 @@ export FLASK_ENV=development
 ```
 
 
-## Running local
+## Running local machine
 ___
 ```
 export FLASK_ENV=development
@@ -36,6 +36,14 @@ export FLASK_ENV=development
 flask run
 or
 python src/main.py 
+```
+
+## Running with docker-compose
+
+___
+```
+docker-compose up --build
+
 ```
 
 ## Swagger Doc

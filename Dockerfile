@@ -8,8 +8,9 @@ RUN pip install -r ./requirements.txt -r ./requirements_local.txt
 
 FROM base as release
 
-ARG FLASK_ENV
-ENV FLASK_ENV=${FLASK_ENV}
+ARG RUN_ENVIRONMENT
+ENV FLASK_ENV=${RUN_ENVIRONMENT}
+ENV ENV=${RUN_ENVIRONMENT}
 
 WORKDIR /app
 
@@ -21,6 +22,9 @@ RUN addgroup -S app && \
 COPY . /app/
 COPY --from=BUILD /usr/local/ /usr/local
 
+
 USER app
 
-CMD python src/main.py
+CMD python app/src/main.py
+
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
