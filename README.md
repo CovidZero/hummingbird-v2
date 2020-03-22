@@ -47,7 +47,7 @@ docker-compose up --build
 http://127.0.0.1:5000/data_api/v1/
 
 
-## Setup database 
+## To Setup database locally
 ___
 
 - Local
@@ -59,9 +59,10 @@ flask db upgrade --directory=local_migrations
 ```
 
 
-## To run Tests
+## To run tests locally
 ___
 ```
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
 export FLASK_ENV=testing
 python tests/runner.py
 ```
