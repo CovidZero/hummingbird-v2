@@ -143,6 +143,9 @@ src/app.db
 # TESTS
 src/test_data/test.db
 
+# REPO
+
+.github
 #vscode
 .vscode
 
