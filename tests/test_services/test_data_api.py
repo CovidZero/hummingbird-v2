@@ -3,7 +3,7 @@ import json
 from unittest import TestCase
 from app import app, db
 from mock import patch
-from models import City
+from models import City,CasesLocation
 from tests.runner import clear_db
 
 
@@ -165,6 +165,27 @@ class TestDataApi(TestCase):
         assert city_data2['cases']['suspectedCases'] == 5
         assert city_data2['cases']['recoveredCases'] == 1
         assert city_data2['cases']['deaths'] == 2
+
+    #Obter um array de casos de COVID-19 próximos ao usuário
+    # /[nome_a_definir]?lat=[LATITUDE]&lng=[LONGITUDE]
+    def test_return_cases_near_user(self):
+        # Generate test data
+        CasesLocation().save(self.db.session, id=0, city='Porto Alegre', state='RS',
+                    country='Brasil', status='ACTIVE', latitude=-29.974343, longitude=-51.195532)
+        CasesLocation().save(self.db.session, id=1, city='Porto Alegre', state='RS',
+                    country='Brasil', status='SUSPECTED', latitude=-29.974343, longitude=-51.195532)
+        CasesLocation().save(self.db.session, id=2, city='Porto Alegre', state='RS',
+                    country='Brasil', status='RECOVERED', latitude=-29.974343, longitude=-51.195532)
+
+        # Should not include this data
+        CasesLocation().save(self.db.session, id=3, city='Igarapava', state='SP',
+                    country='Brasil', status='RECOVERED', latitude=-20.047582, longitude=-47.780110)
+        self.db.session.commit()
+
+        resp = self.client.get('/data_api/v1/data/cases_location?lat=-29.974343&lng=-51.195532')
+        data = json.loads(resp.get_data(as_text=True))
+        print("response:",data)
+
 
 
 
