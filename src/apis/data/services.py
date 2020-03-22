@@ -1,55 +1,71 @@
-from models import City
+from models import City,CasesLocation
 from sqlalchemy.sql import or_
 
+class ReportService():
 
-class ReportService:
+    def searchCityCases(self, query):
+        cases = City.query.filter(or_(City.city.like('%'+query+'%'), City.state.like('%'+query+'%'))).all()
 
-    def search_city_cases(self, query):
-        cases = City.query.filter(
-            or_(City.city.like('%'+query+'%'), City.state.like('%'+query+'%'))
-        ).all()
         result = []
+
         for case in cases:
-            active_cases = case.total_cases - case.suspects - \
-                           case.refuses - case.deaths - case.recovered
-            current_case = {
-                'city': case.city,
-                'state': case.state,
-                'cases': {
-                    'activeCases': active_cases,
-                    'suspectedCases': case.suspects,
-                    'recoveredCases': case.recovered,
-                    'deaths': case.deaths
-                }
-            }
-            result.append(current_case)
+            activeCases = case.total_cases - case.suspects - case.refuses - case.deaths - case.recovered
+            currentCase = {
+            'city': case.city,
+            'state': case.state,
+            'cases': {
+                'activeCases': activeCases,
+                'suspectedCases': case.suspects,
+                'recoveredCases': case.recovered,
+                'deaths': case.deaths
+            }}
+            result.append(currentCase)
+
         return result
-
-    def get_all_city_cases(self):
+    
+    def getAllCityCases(self):
         all_cases = City.query.all()
-        return compile_cases(all_cases)
 
-    def search_city_cases_by_state(self, uf):
-        city_situation = City.query.filter_by(
+        return compileCases(all_cases)
+
+    def searchCityCasesByState(self, uf):
+        citySituation = City.query.filter_by(
             state=uf).all()
-        return compile_cases(city_situation)
 
+        return compileCases(citySituation)
+    
+    def getCasesNearLocation(self, latitude, longitude):
+        todos_casos = CasesLocation.query.all()
 
-def compile_cases(data):
-    active_cases = sum(
-        [(city.total_cases - city.suspects -
-          city.refuses - city.deaths - city.recovered)
-         for city in data]
-    ) or 0
-    suspected_cases = sum(
+        return compileCasesNearLocation(todos_casos)
+
+def compileCases(data):
+    activeCases = sum([(city.total_cases - city.suspects - city.refuses -
+                    city.deaths - city.recovered) for city in data]) or 0
+    suspectedCases = sum(
         [city.suspects for city in data]) or 0
-    recovered_cases = sum(
+    recoveredCases = sum(
         [city.recovered for city in data]) or 0
     deaths = sum([city.deaths for city in data]) or 0
 
     return {
-        'activeCases': active_cases,
-        'suspectedCases': suspected_cases,
-        'recoveredCases': recovered_cases,
+        'activeCases': activeCases,
+        'suspectedCases': suspectedCases,
+        'recoveredCases': recoveredCases,
         'deaths': deaths
     }
+
+def compileCasesNearLocation(data):
+    activeCases = 0
+    suspectedCases = 0
+    recoveredCases = 0
+    deaths = 0
+
+    for case in data:
+        return {
+            'status': case.status,
+            'location':{
+                'latitude':case.longitude,
+                'longitude':case.latitude
+            }
+        }

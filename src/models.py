@@ -101,3 +101,21 @@ class TestPoint(db.Model):
            'latitude': float(self.latitude),
            'longitude': float(self.longitude)
         }
+
+
+# Model City -> Longitude(Float), Latitude(Float), Status(String)
+class CasesLocation(db.Model):
+    __tablename__ = 'CASES_LOCATION'
+    id = db.Column(db.String(255), primary_key=True)
+    city = db.Column(db.String(255), nullable=False)
+    state = db.Column(db.String(255), nullable=False)
+    country = db.Column(db.String(255), nullable=False)
+    status = db.Column(db.String(255), nullable=False)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+
+    def save(self, session, **kwargs):
+        model = CasesLocation(**kwargs
+                     )
+        session.add(model)
+        return model
