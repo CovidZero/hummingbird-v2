@@ -22,12 +22,13 @@ jobs:
         python-version: 3.7
     - name: Install dependencies
       run: |
+        echo $PYTHONPATH
         python -m pip install --upgrade pip
         pip install -r src/requirements.txt
         pip install -r requirements_local.txt
+    - name: Test with unittest
+      run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)/src
         export FLASK_APP=src/main.py
         export FLASK_ENV=testing
-    - name: Test with unittest
-      run: |
-        python tests/runner.py  
+        python tests/runner.py
