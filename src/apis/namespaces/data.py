@@ -1,6 +1,6 @@
 from flask_restplus import Namespace, Resource
 from models import City
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, or_
 
 my_api = Namespace('data', description='Data related operations')
 
@@ -32,6 +32,30 @@ class GetAllCases(Resource):
         todos_casos = City.query.all()
 
         return compile_cases(todos_casos)
+
+@my_api.route('/search/<string:termo>')
+class GetCasesFromSearch(Resource):
+    def get(self, termo):
+        """Obter todos os casos confirmados, suspeitos, recuperados e óbitos por cidade baseados em pesquisa pelo termo"""
+        casos = City.query.filter(or_(City.city.like('%'+termo+'%'), City.state.like('%'+termo+'%'))).all()
+
+        result = []
+
+        for caso in casos:
+            casos_ativos = caso.total_cases - caso.suspects - caso.refuses - caso.deaths - caso.recovered
+            dado_atual = {
+            'city': caso.city,
+            'state': caso.state,
+            'cases': {
+                'activeCases': casos_ativos,
+                'suspectedCases': caso.suspects,
+                'recoveredCases': caso.recovered,
+                'deaths': caso.deaths
+            }}
+            result.append(dado_atual)
+
+        return result
+
 
 
 def compile_cases(dados):
