@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restplus import Api as ApiRestPlus
-from apis.namespaces import data as data_namespace
+from apis.data import endpoints as data_namespace
 
 
 client_api = ApiRestPlus(
