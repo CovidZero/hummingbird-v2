@@ -5,9 +5,9 @@ from sqlalchemy.sql import or_
 
 class ReportService:
 
-    def search_city_cases(self, query):
+    def search_on_location_by_term(self, query):
         cases = City.query.filter(
-            or_(City.city.like('%'+query+'%'), City.state.like('%'+query+'%'))
+            or_(City.city.like(query), City.state.like(query))
         ).all()
 
         result = []
@@ -31,12 +31,13 @@ class ReportService:
         all_cases = City.query.all()
         return compile_cases(all_cases)
 
-    def search_city_cases_by_state(self, uf):
+    def search_city_cases_by_state(self, state_code):
         city_situation = City.query.filter_by(
-            state=uf).all()
+            state=state_code).all()
         return compile_cases(city_situation)
 
     def get_cases_near_location(self, latitude, longitude):
+        # FIX: Why those variables has not been used?
         all_cases = CasesLocation.query.all()
         return compile_cases_near_location(all_cases)
 
