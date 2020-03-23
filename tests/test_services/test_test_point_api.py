@@ -14,6 +14,13 @@ class TestTestPointApi(TestCase):
         db.create_all()
         self.db = db
 
+        # Endpoints Authentication Setup
+        response = self.client.post(
+            f"/data_api/v1/authorization/create_tokens",
+            json={"username": self.app.config['AUTH_USERNAME'], "password": self.app.config['AUTH_PASSWORD']}
+        )
+        self.authentication = json.loads(response.data)
+
     def tearDown(self):
         clear_db(self.db)
 
@@ -28,7 +35,12 @@ class TestTestPointApi(TestCase):
 
         self.db.session.commit()
 
-        resp = self.client.get('/data_api/v1/test_point/all')
+        resp = self.client.get(
+            '/data_api/v1/test_point/all',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data(as_text=True))
 
         assert len(data) == 2
@@ -43,14 +55,24 @@ class TestTestPointApi(TestCase):
 
         self.db.session.commit()
 
-        resp = self.client.get('/data_api/v1/test_point/city/city123')
+        resp = self.client.get(
+            '/data_api/v1/test_point/city/city123',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data(as_text=True))
-
+        self.assertEqual(resp.status_code, 200)
         assert len(data) == 1
 
     def test_test_points_not_found(self):
 
-            resp = self.client.get('/data_api/v1/test_point/city/city_not_exist')
+            resp = self.client.get(
+                '/data_api/v1/test_point/city/city_not_exist',
+                headers={
+                    'Authorization': f"Bearer {self.authentication['access_token']}"
+                }
+            )
             data = json.loads(resp.get_data(as_text=True))
 
             assert len(data) == 0
