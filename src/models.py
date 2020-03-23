@@ -35,6 +35,11 @@ class City(db.Model):
         session.add(model)
         return model
 
+    @property
+    def active_cases(self):
+        return (self.total_cases - self.suspects -
+          self.refuses - self.deaths - self.recovered)
+
 
 # Model State -> Country(String), State(String),
 # totalCases(Int), totalCasesMS(Int),

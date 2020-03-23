@@ -13,13 +13,11 @@ class ReportService:
         result = []
 
         for case in cases:
-            active_cases = case.total_cases - case.suspects - \
-                           case.refuses - case.deaths - case.recovered
             current_case = {
                 'city': case.city,
                 'state': case.state,
                 'cases': {
-                    'activeCases': active_cases,
+                    'activeCases': case.active_cases,
                     'suspectedCases': case.suspects,
                     'recoveredCases': case.recovered,
                     'deaths': case.deaths
@@ -45,8 +43,7 @@ class ReportService:
 
 def compile_cases(data):
     active_cases = sum(
-        [(city.total_cases - city.suspects -
-          city.refuses - city.deaths - city.recovered)
+        [city.active_cases
          for city in data]) or 0
     suspected_cases = sum(
         [city.suspects for city in data]) or 0
