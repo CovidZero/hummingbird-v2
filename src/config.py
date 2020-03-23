@@ -13,7 +13,6 @@ class DefaultConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Swagger
-    SWAGGER_SUPPORTED_SUBMIT_METHODS = []
     RESTPLUS_MASK_HEADER = False
     RESTPLUS_MASK_SWAGGER = False
 
@@ -47,6 +46,9 @@ class StagingConfig(DefaultConfig):
 class ProductionConfig(DefaultConfig):
     TESTING = False
     DEBUG = False
+
+    # SWAGGER
+    SWAGGER_SUPPORTED_SUBMIT_METHODS = []
 
     # AUTHORIZATION
     # TODO: Create these credentials

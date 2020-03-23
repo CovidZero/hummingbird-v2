@@ -43,7 +43,7 @@ docker-compose up --build
 
 ```
 
-## Swagger Doc
+## Swagger API Doc 
 http://127.0.0.1:5000/data_api/v1/
 
 
@@ -52,6 +52,7 @@ ___
 
 - Local
 ```
+export FLASK_APP=src/main.py
 export FLASK_ENV=development
 flask db init --directory=local_migrations
 flask db migrate --directory=local_migrations

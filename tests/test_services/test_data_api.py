@@ -15,11 +15,23 @@ class TestDataApi(TestCase):
         db.create_all()
         self.db = db
 
+        # Endpoints Authentication Setup
+        response = self.client.post(
+            f"/data_api/v1/authorization/create_tokens",
+            json={"username": self.app.config['AUTH_USERNAME'], "password": self.app.config['AUTH_PASSWORD']}
+        )
+        self.authentication = json.loads(response.data)
+
     def tearDown(self):
         clear_db(self.db)
 
     def test_return_cases_by_state_without_reports(self):
-        resp = self.client.get('/data_api/v1/data/state/SP')
+        resp = self.client.get(
+            '/data_api/v1/data/state/SP',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data(as_text=True))
 
         assert len(data) == 4
@@ -45,8 +57,12 @@ class TestDataApi(TestCase):
         City().save(self.db.session, city='Uberaba', state='MG',
                     country='Brasil', total_cases=50, suspects=35, refuses=3, deaths=1, recovered=1)
         self.db.session.commit()
-
-        resp = self.client.get('/data_api/v1/data/state/SP')
+        resp = self.client.get(
+            '/data_api/v1/data/state/SP',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data(as_text=True))
 
         assert len(data) == 4
@@ -70,7 +86,12 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/all')
+        resp = self.client.get(
+            '/data_api/v1/data/all',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data(as_text=True))
 
         #assert
@@ -95,7 +116,12 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/search?query=c1')
+        resp = self.client.get(
+            '/data_api/v1/data/search?query=c1',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data())
 
         city_data1 = data[0]
@@ -118,7 +144,12 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/search?query=s2')
+        resp = self.client.get(
+            '/data_api/v1/data/search?query=s2',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data())
 
         city_data1 = data[0]
@@ -142,7 +173,12 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         #act
-        resp = self.client.get('/data_api/v1/data/search?query=s2')
+        resp = self.client.get(
+            '/data_api/v1/data/search?query=s2',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data())
 
         city_data1 = data[0]
@@ -164,7 +200,7 @@ class TestDataApi(TestCase):
         assert city_data2['cases']['recoveredCases'] == 1
         assert city_data2['cases']['deaths'] == 2
 
-    #Obter um array de casos de COVID-19 próximos ao usuário
+    # Obter um array de casos de COVID-19 próximos ao usuário
     # /[nome_a_definir]?lat=[LATITUDE]&lng=[LONGITUDE]
     def test_return_cases_near_user(self):
         # Generate test data
@@ -180,10 +216,14 @@ class TestDataApi(TestCase):
                     country='Brasil', status='RECOVERED', latitude=-20.047582, longitude=-47.780110)
         self.db.session.commit()
 
-        resp = self.client.get('/data_api/v1/data/cases_location?lat=-29.974343&lng=-51.195532')
+        resp = self.client.get(
+            '/data_api/v1/data/cases_location?lat=-29.974343&lng=-51.195532',
+            headers={
+                'Authorization': f"Bearer {self.authentication['access_token']}"
+            }
+        )
         data = json.loads(resp.get_data(as_text=True))
-        print("response:",data)
-
+        self.assertEqual(data['status'], 'ACTIVE')
 
 
 
