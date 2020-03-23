@@ -7,4 +7,6 @@ jobs:
     steps:
       - uses: pullreminders/assignee-to-reviewer-action@v1.0.4
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"          
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: ".github/auto_assign.yml" 
+         
