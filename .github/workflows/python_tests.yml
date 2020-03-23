@@ -5,10 +5,10 @@ name: Python Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, staging ]
   pull_request:
-    branches: [ master ]
-
+    branches: [ master, staging ]
+    
 jobs:
   build:
 
