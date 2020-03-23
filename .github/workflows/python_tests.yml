@@ -5,9 +5,13 @@ name: Python Tests
 
 on:
   push:
-    branches: [ master staging ]
+    branches:
+      - master 
+      - staging
   pull_request:
-    branches: [ master staging ]
+    branches:
+      - master
+      - staging
 
 jobs:
   build:
