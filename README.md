@@ -1,4 +1,7 @@
 # Hummingbird V2
+![Python Tests](https://github.com/CovidZero/hummingbird-v2/workflows/Python%20Tests/badge.svg)
+![Python Code Style Enforcement](https://github.com/CovidZero/hummingbird-v2/workflows/Python%20Code%20Style%20Enforcement/badge.svg)
+![Auto Assign](https://github.com/CovidZero/hummingbird-v2/workflows/Auto%20Assign/badge.svg)
 
 
 ## Project Resources
