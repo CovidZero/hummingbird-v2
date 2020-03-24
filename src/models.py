@@ -64,13 +64,13 @@ class State(db.Model):
 # Model StatesPerDay -> Date(Date), Country(String),
 # State(String), newCases(Int), totalCases(Int)
 class StatesPerDay(db.Model):
-    __tablename__ = 'STATES_PER_DAY'
+    __tablename__ = 'statesperday'
     id = db.Column(db.String(255), primary_key=True)
-    date = db.Column(db.DateTime, nullable=False)
-    country = db.Column(db.String(255), primary_key=True)
-    state = db.Column(db.String(255), nullable=False)
-    new_cases = db.Column(db.Integer)
-    total_cases = db.Column(db.Integer)
+    date = db.Column(db.Date)
+    country = db.Column(db.String(255))
+    state = db.Column(db.String(255))
+    newcases = db.Column(db.Integer)
+    totalcases = db.Column(db.Integer)
 
     def save(self, session, **kwargs):
         model = StatesPerDay(**kwargs

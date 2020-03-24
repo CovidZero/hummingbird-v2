@@ -20,7 +20,7 @@ class TestStatesPerDayMethods(TestCase):
 
     def test_if_save_method_saves_states_per_day_on_database(self):
         StatesPerDay().save(self.db.session, id=1, date=datetime.date.today(),
-                            country='Brasil', state='SP', new_cases=35, total_cases=3)
+                            country='Brasil', state='SP', newcases=35, totalcases=3)
         self.db.session.commit()
         _model = self.db.session.query(StatesPerDay).filter_by(
             state='SP').first()
