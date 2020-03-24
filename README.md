@@ -12,7 +12,9 @@ ___
 - Tests: unittests
 
 
-## Setup dependencies
+### Running out of docker container
+
+#### - Setup dependencies
 ___
 ```
 cd hummingbird-v2
@@ -22,48 +24,26 @@ pip install -r src/requirements.txt
 pip install -r requirements_local.txt
 ```
 
-## Variables setup
+#### - Setup database - using SQLite
 ___
 ```
 export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-export FLASK_ENV=development
-```
-
-
-## Running local machine
-___
-```
-export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-export FLASK_ENV=development
-python src/main.py 
-```
-
-## Running with docker-compose
-
-___
-```
-docker-compose up --build
-
-```
-
-## Swagger API Doc 
-http://127.0.0.1:5000/data_api/v1/
-
-
-## To Setup database locally
-___
-
-- Local
-```
 export FLASK_APP=src/main.py
-export FLASK_ENV=development
+export FLASK_ENV=local
 flask db init --directory=local_migrations
-flask db migrate --directory=../local_migrations
+flask db migrate --directory=local_migrations
 flask db upgrade --directory=local_migrations   
 ```
 
+#### - Running the application
+___
+```
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+export FLASK_ENV=local
+python src/main.py 
+```
 
-## To run tests locally
+#### - Tests
 ___
 ```
 export PYTHONPATH=$PYTHONPATH:$(pwd)/src
@@ -71,22 +51,23 @@ export FLASK_ENV=testing
 python tests/runner.py
 ```
 
-## To run Flake 8 For Style Guide Enforcement
+#### - Flake 8 For Style Guide Enforcement
 ___
 ```
 flake8 src
 ```
 
 
-## Setup Docker
+### Running with docker container
 
-#### Start your environment using docker
+
+#### - Start your environment using docker
 ___
 ```
 docker-compose up
 ```
 
-#### Configure database to develop
+#### - Setup database for development
 
 ___
 ```
@@ -100,3 +81,7 @@ flask db migrate --directory=../local_migrations
 flask db upgrade --directory=local_migrations  
 
 ```
+
+
+## Swagger API Doc 
+ - http://127.0.0.1:5000/data_api/v1/

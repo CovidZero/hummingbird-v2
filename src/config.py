@@ -67,7 +67,7 @@ class ProductionConfig(DefaultConfig):
     JWT_ACCESS_TOKEN_EXPIRES = 3600
 
 
-default = DefaultConfig()
+local = DefaultConfig()
 development = DevelopmentConfig()
 testing = TestingConfig()
 staging = StagingConfig()
