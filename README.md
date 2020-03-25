@@ -90,3 +90,8 @@ flask db upgrade --directory=local_migrations
 
 ## Swagger API Doc 
  - http://127.0.0.1:5000/data_api/v1/
+
+
+ ## Contribution Guide
+
+ - If you want to contribute to this project with us, please visit our [_Contribution Guide._](https://github.com/CovidZero/hummingbird-v2/blob/staging/CONTRIBUTING.md)
