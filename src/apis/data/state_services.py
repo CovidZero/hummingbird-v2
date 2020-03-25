@@ -8,7 +8,8 @@ def get_all_state_cases():
         result = []
         for case in state_cases:
             result.append({
-                "stateCode": case.state_data.state,
+                "stateCode": case.state_data.abbreviation,
+                "stateName": case.state_data.name,
                 "lat": case.state_data.lat,
                 "lng": case.state_data.lng,
                 "cases": compile_state_cases(case)

@@ -28,16 +28,16 @@ class TestDataApi(TestCase):
         clear_db(self.db)
 
     def test_return_all_state_cases_cases(self):
-        State().save(self.db.session, state='SP', country='Brasil',
-                     lat='12.0000', lng='25.0000')
-        State().save(self.db.session, state='SP', country='Brasil',
-                     lat='12.0000', lng='25.0000')
-        StateCases().save(self.db.session, state=1, totalcases=1,
+        State().save(self.db.session, abbreviation='SP', name='São Paulo',
+                     lat=12.0001, lng=25.0001)
+        State().save(self.db.session, abbreviation='MG', name='Minas Gerais',
+                     lat=13.0001, lng=26.0001)
+        StateCases().save(self.db.session, state_id=1, totalcases=1,
                           totalcasesms=1, notconfirmedbyms=0,
                           deaths=0, url='https://some_url.com.br')
-        StateCases().save(self.db.session, state=2, totalcases=1,
-                          totalcasesms=1, notconfirmedbyms=0,
-                          deaths=0, url='https://some_url.com.br')
+        StateCases().save(self.db.session, state_id=2, totalcases=5,
+                          totalcasesms=3, notconfirmedbyms=2,
+                          deaths=8, url='https://some_url.com.br')
         self.db.session.commit()
 
         resp = self.client.get(
@@ -50,22 +50,20 @@ class TestDataApi(TestCase):
         self.assertEqual(len(response), 2)
         self.assertEqual(response, [{
             "stateCode": "SP",
-            "lat": "12.0000",
-            "lng": "25.0000",
+            "stateName": "São Paulo",
+            "lat": "12.0001",
+            "lng": "25.0001",
             "cases": {
                 "activeCases": 1,
                 "deaths": 0
             }
         }, {
-            "stateCode": "SP",
-            "lat": "12.0000",
-            "lng": "25.0000",
+            "stateCode": "MG",
+            "stateName": "Minas Gerais",
+            "lat": "13.0001",
+            "lng": "26.0001",
             "cases": {
-                "activeCases": 1,
-                "deaths": 0
+                "activeCases": 5,
+                "deaths": 8
             }
         }])
-
-
-
-

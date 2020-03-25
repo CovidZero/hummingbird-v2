@@ -28,10 +28,10 @@ class City(db.Model):
 class State(db.Model):
     __tablename__ = 'state'
     id = db.Column(db.Integer, primary_key=True)
-    state = db.Column(db.String)
-    country = db.Column(db.String)
-    lat = db.Column(db.String)
-    lng = db.Column(db.String)
+    name = db.Column(db.String)
+    abbreviation = db.Column(db.String)
+    lat = db.Column(db.Float)
+    lng = db.Column(db.Float)
 
     def save(self, session, **kwargs):
         model = State(**kwargs)
@@ -40,9 +40,10 @@ class State(db.Model):
 
 
 class StateCases(db.Model):
-    __tablename__ = 'state_cases'
+    __tablename__ = 'casesperstate'
     id = db.Column(db.Integer, primary_key=True)
-    state = db.Column(db.Integer, db.ForeignKey('state.id'))
+    country = db.Column(db.String)
+    state_id = db.Column(db.Integer, db.ForeignKey('state.id'))
     totalcases = db.Column(db.Integer)
     totalcasesms = db.Column(db.Integer)
     notconfirmedbyms = db.Column(db.Integer)

@@ -18,8 +18,8 @@ class TestStateMethods(TestCase):
         clear_db(self.db)
 
     def test_if_save_method_saves_state_on_database(self):
-        State().save(self.db.session, state='SP', country='Brasil',
-                     lat='12.0000', lng='25.0000')
+        State().save(self.db.session, abbreviation='SP', name='São Paulo',
+                     lat=12.0001, lng=25.0001)
         self.db.session.commit()
-        _model = self.db.session.query(State).filter_by(state='SP').first()
+        _model = self.db.session.query(State).filter_by(abbreviation='SP').first()
         self.assertIsNotNone(_model)

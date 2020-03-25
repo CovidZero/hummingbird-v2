@@ -25,6 +25,7 @@ cases_detail_response = data_endpoints.model('State Cases Detail Response', {
 
 state_cases_response = data_endpoints.model('State Cases Response', {
     'stateCode': fields.String(required=True, description='State code'),
+    'stateName': fields.String(required=True, description='State name'),
     'lat': fields.String(required=True, description='State Latitude'),
     'lng': fields.String(required=True, description='State Longitude'),
     'cases': fields.Nested(cases_detail_response,
@@ -46,7 +47,6 @@ class GetCityCasesByState(Resource):
 @data_endpoints.route('/state/cases/all')
 @data_endpoints.expect(headers)
 class GetAllStateCases(Resource):
-    @jwt_required
     @data_endpoints.doc('state_cases_all')
     @data_endpoints.marshal_with(state_cases_response)
     def get(self):
