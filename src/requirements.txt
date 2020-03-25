@@ -6,6 +6,8 @@ Flask-Migrate==2.5.2
 Flask-RESTful==0.3.7
 requests==2.22.0
 Flask-JWT-Extended==3.24.1
+psycopg2==2.8.4
+psycopg2-binary==2.8.4
 flake8==3.7.9
 pep8-naming==0.10.0
 gunicorn

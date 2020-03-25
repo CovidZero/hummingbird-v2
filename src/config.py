@@ -30,7 +30,11 @@ class DefaultConfig(object):
 
 
 class DevelopmentConfig(DefaultConfig):
-    ...
+    TESTING = False
+    DEBUG = False
+
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2:' \
+                              '//teste:teste@db:5432/hummingbird-v2'
 
 
 class TestingConfig(DefaultConfig):
@@ -47,6 +51,8 @@ class ProductionConfig(DefaultConfig):
     TESTING = False
     DEBUG = False
 
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2:" \
+                              "//teste:teste@127.0.0.1:54320/hummingbird-v2"
     # SWAGGER
     SWAGGER_SUPPORTED_SUBMIT_METHODS = []
 
@@ -61,7 +67,7 @@ class ProductionConfig(DefaultConfig):
     JWT_ACCESS_TOKEN_EXPIRES = 3600
 
 
-default = DefaultConfig()
+local = DefaultConfig()
 development = DevelopmentConfig()
 testing = TestingConfig()
 staging = StagingConfig()

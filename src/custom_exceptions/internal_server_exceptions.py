@@ -1,17 +1,13 @@
 from werkzeug.exceptions import HTTPException
 
 
-class UnauthorizedException(HTTPException):
+class InternalServerException(HTTPException):
     """
-    Base HTTPException for UNAUTHORIZED - 401 requests
+    Base HTTPException for INTERNAL SERVER ERROR - 500
     You should extend new classes in this file bellow
     and setup a custom description.
     The status code should remains the same
     """
     def __init__(self):
         super(HTTPException, self).__init__()
-        self.code = 401
-
-
-class BadUsernameOrPassword(UnauthorizedException):
-    description = 'Bad username or password'
+        self.code = 500

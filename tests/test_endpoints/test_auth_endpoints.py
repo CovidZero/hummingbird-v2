@@ -14,7 +14,8 @@ class TestAuthEndpoints(TestCase):
     def test_should_create_tokens_for_valid_credentials(self):
         response = self.client.post(
             '/data_api/v1/authorization/create_tokens',
-            json={"username": self.app.config['AUTH_USERNAME'], "password": self.app.config['AUTH_PASSWORD']}
+            json={"username": self.app.config['AUTH_USERNAME'],
+                  "password": self.app.config['AUTH_PASSWORD']}
         )
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.get_data(as_text=True))
@@ -22,9 +23,10 @@ class TestAuthEndpoints(TestCase):
         self.assertIsNotNone(data.get('refresh_token'))
         self.assertIsNotNone(data.get('expires'))
 
-    def test_should_raise_unauthorized_status_code_for_invalid_credentials(self):
+    def test_should_raise_unauthorized_for_invalid_credentials(self):
         response = self.client.post(
             '/data_api/v1/authorization/create_tokens',
-            json={"username": self.app.config['AUTH_USERNAME'], "password": 'some_invalid_password'}
+            json={"username": self.app.config['AUTH_USERNAME'],
+                  "password": 'some_invalid_password'}
         )
         self.assertEqual(response.status_code, 401)
