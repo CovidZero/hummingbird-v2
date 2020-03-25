@@ -1,12 +1,16 @@
+import os
 import logging
 import traceback
 from app import app, db
 from app import setup_database_migration
+from app import setup_database_seeder
 from apis.apis import load_apis
 from werkzeug.exceptions import HTTPException
 
 
 migrate = setup_database_migration(app, db)
+if os.getenv('FLASK_ENV') not in ['production']:
+    seed = setup_database_seeder(app, db)
 load_apis(app)
 
 

@@ -59,6 +59,17 @@ ___
 flake8 src
 ```
 
+#### - Database Seed
+___
+```
+cd hummingbird-v2
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+export FLASK_ENV=local
+python src/main.py 
+flask seed run
+```
+
+
 
 ### Running with docker container
 

@@ -3,6 +3,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from flask_seeder import FlaskSeeder
 
 
 def setup_app():
@@ -23,6 +24,11 @@ def setup_database(_app):
 
 def setup_database_migration(_app, _db):
     return Migrate(_app, _db)
+
+
+def setup_database_seeder(_app, _db):
+    seeder = FlaskSeeder()
+    seeder.init_app(_app, _db)
 
 
 app = setup_app()
