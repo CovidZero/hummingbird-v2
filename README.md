@@ -60,6 +60,11 @@ flake8 src
 
 ### Running with docker container
 
+#### - Setup your environment using docker
+___
+```
+docker-compose build
+```
 
 #### - Start your environment using docker
 ___
