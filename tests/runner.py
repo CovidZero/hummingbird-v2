@@ -9,6 +9,10 @@ def main():
     with app.app_context():
         if os.getenv('FLASK_ENV') not in ['testing']:
             raise Exception('TESTS IS ALLOWED TO RUN ONLY END TESTING MODE')
+        try:
+            os.remove('src/test_data/test.db')
+        except IOError:
+            print('Not found test db')
         db.create_all()
         suite = TestLoader().discover(
             'tests',

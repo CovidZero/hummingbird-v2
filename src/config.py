@@ -45,25 +45,33 @@ class TestingConfig(DefaultConfig):
 
 class StagingConfig(DefaultConfig):
     TESTING = False
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://" \
+                              f"{os.getenv('DB_USERNAME')}:" \
+                              f"{os.getenv('DB_PASSWD')}@" \
+                              f"{os.getenv('DB_ENDPOINT')}:" \
+                              f"5432/" \
+                              f"{os.getenv('DB_NAME')}"
 
 
 class ProductionConfig(DefaultConfig):
     TESTING = False
     DEBUG = False
-
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2:" \
-                              "//teste:teste@127.0.0.1:54320/hummingbird-v2"
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://" \
+                              f"{os.getenv('DB_USERNAME', 'teste')}:" \
+                              f"{os.getenv('DB_PASSWD', 'teste')}@" \
+                              f"{os.getenv('DB_ENDPOINT', '127.0.0.1')}:" \
+                              f"{os.getenv('DB_PORT','5432')}/" \
+                              f"{os.getenv('DB_NAME', 'hummingbird-v2')}"
     # SWAGGER
     SWAGGER_SUPPORTED_SUBMIT_METHODS = []
 
     # AUTHORIZATION
-    # TODO: Create these credentials
-    # AUTH_USERNAME = ''
-    # AUTH_PASSWORD = ''
+    AUTH_USERNAME = os.getenv('AUTH_USERNAME', 'hummingbird_p')
+    AUTH_PASSWORD = os.getenv('AUTH_PASSWORD', '88FDD586EF3A7')
 
     # JWT CONFIG
-    # TODO: Setup a secret key
-    # JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', '')
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', '2wrsaheZd6DhsOqYKjy')
     JWT_ACCESS_TOKEN_EXPIRES = 3600
 
 
