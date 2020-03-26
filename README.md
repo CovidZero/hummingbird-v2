@@ -1,5 +1,5 @@
 
-# Hummingbird V2  
+# Hummingbird V2 
 
 ![Python Tests](https://github.com/CovidZero/hummingbird-v2/workflows/Python%20Tests/badge.svg)
 ![Python Code Style Enforcement](https://github.com/CovidZero/hummingbird-v2/workflows/Python%20Code%20Style%20Enforcement/badge.svg)
