@@ -36,7 +36,6 @@ state_cases_response = data_endpoints.model('State Cases Response', {
 @data_endpoints.route('/state/<string:state_code>')
 @data_endpoints.expect(headers)
 class GetCityCasesByState(Resource):
-    @jwt_required
     @data_endpoints.doc('by_state')
     def get(self, state_code):
         """Get confirmed, suspects, recovered and
