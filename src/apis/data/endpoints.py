@@ -56,7 +56,6 @@ class GetAllStateCases(Resource):
 @data_endpoints.route('/all')
 @data_endpoints.expect(headers)
 class GetAllCases(Resource):
-    @jwt_required
     @data_endpoints.doc('all')
     def get(self):
         """Get all confirmed, suspects, recovered and
