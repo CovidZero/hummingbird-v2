@@ -15,7 +15,7 @@ class StateSeeder(Seeder):
                 'country': 'Brazil',
                 'state': StateGeneratorSequence(),
                 'lat': "99.000",
-                'long': "99.000",
+                'lng': "99.000",
 
             }
         )
@@ -27,7 +27,7 @@ class StateSeeder(Seeder):
                 'country': 'Brazil',
                 'state': 'Total',
                 'lat': f"00.000",
-                'long': f"00.000",
+                'lng': f"00.000",
 
             }
         )
