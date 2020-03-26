@@ -9,6 +9,6 @@ Flask-JWT-Extended==3.24.1
 psycopg2-binary==2.8.4
 flake8==3.7.9
 pep8-naming==0.10.0
-gunicorn
+waitress
 Flask-Seeder==1.1.1
 Faker==4.0.2
