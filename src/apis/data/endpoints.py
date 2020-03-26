@@ -27,7 +27,7 @@ state_cases_response = data_endpoints.model('State Cases Response', {
     'stateCode': fields.String(required=True, description='State code'),
     'stateName': fields.String(required=True, description='State name'),
     'lat': fields.String(required=True, description='State Latitude'),
-    'long': fields.String(required=True, description='State Longitude'),
+    'lng': fields.String(required=True, description='State Longitude'),
     'cases': fields.Nested(cases_detail_response,
                            required=True, description='Cases details'),
 })

@@ -29,9 +29,9 @@ class TestDataApi(TestCase):
 
     def test_return_all_state_cases_cases(self):
         State().save(self.db.session, abbreviation='SP', name='São Paulo',
-                     lat=12.0001, long=25.0001)
+                     lat=12.0001, lng=25.0001)
         State().save(self.db.session, abbreviation='MG', name='Minas Gerais',
-                     lat=13.0001, long=26.0001)
+                     lat=13.0001, lng=26.0001)
         StateCases().save(self.db.session, state_id=1, totalcases=1,
                           totalcasesms=1, notconfirmedbyms=0,
                           deaths=0, url='https://some_url.com.br')
@@ -52,7 +52,7 @@ class TestDataApi(TestCase):
             "stateCode": "SP",
             "stateName": "São Paulo",
             "lat": "12.0001",
-            "long": "25.0001",
+            "lng": "25.0001",
             "cases": {
                 "activeCases": 1,
                 "deaths": 0
@@ -61,7 +61,7 @@ class TestDataApi(TestCase):
             "stateCode": "MG",
             "stateName": "Minas Gerais",
             "lat": "13.0001",
-            "long": "26.0001",
+            "lng": "26.0001",
             "cases": {
                 "activeCases": 5,
                 "deaths": 8
