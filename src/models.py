@@ -31,7 +31,7 @@ class State(db.Model):
     name = db.Column(db.String)
     abbreviation = db.Column(db.String)
     lat = db.Column(db.Float)
-    lng = db.Column(db.Float)
+    long = db.Column(db.Float)
 
     def save(self, session, **kwargs):
         model = State(**kwargs)

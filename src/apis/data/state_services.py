@@ -11,7 +11,7 @@ def get_all_state_cases():
                 "stateCode": case.state_data.abbreviation,
                 "stateName": case.state_data.name,
                 "lat": case.state_data.lat,
-                "lng": case.state_data.lng,
+                "long": case.state_data.long,
                 "cases": compile_state_cases(case)
             })
         return result

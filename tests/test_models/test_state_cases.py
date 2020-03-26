@@ -28,9 +28,9 @@ class TestStateCasesModel(TestCase):
 
     def test_if_fetches_all_state_cases_from_database(self):
         State().save(self.db.session, abbreviation='SP', name='São Paulo',
-                     lat=12.0001, lng=25.0001)
+                     lat=12.0001, long=25.0001)
         State().save(self.db.session, abbreviation='SP', name='São Paulo',
-                     lat=12.0001, lng=25.0001)
+                     lat=12.0001, long=25.0001)
         StateCases().save(self.db.session, state_id=1, totalcases=1,
                           totalcasesms=1, notconfirmedbyms=0,
                           deaths=0, url='https://some_url.com.br')
