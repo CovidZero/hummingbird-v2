@@ -9,7 +9,7 @@ from werkzeug.exceptions import HTTPException
 
 
 migrate = setup_database_migration(app, db)
-if os.getenv('FLASK_ENV') not in ['production']:
+if os.getenv('FLASK_ENV') not in ['staging', 'production']:
     seed = setup_database_seeder(app, db)
 load_apis(app)
 

@@ -47,7 +47,6 @@ class TestDataApi(TestCase):
         )
         data = json.loads(resp.get_data(as_text=True))
 
-        print(data)
 
         self.assertEqual(data, {
             'totalCases': '6',
