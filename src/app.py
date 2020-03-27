@@ -35,4 +35,4 @@ def setup_database_seeder(_app, _db):
 app = setup_app()
 jwt = setup_jwt_auth(app)
 db = setup_database(app)
-CORS(app, resources={r"/data_api/v1/data/": {"origins": "*"}})
+CORS(app, resources={r"/data_api/v1/data/*": {"origins": "*"}})
