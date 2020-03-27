@@ -12,3 +12,4 @@ pep8-naming==0.10.0
 waitress
 Flask-Seeder==1.1.1
 Faker==4.0.2
+flask-cors==3.0.8

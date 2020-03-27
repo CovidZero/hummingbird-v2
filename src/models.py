@@ -3,26 +3,22 @@ from sqlalchemy.orm import relationship
 
 
 class City(db.Model):
-    __tablename__ = 'city'
+    __tablename__ = 'casespercity'
+    id = db.Column(db.Integer, primary_key=True)
+    country = db.Column(db.String(255))
     city = db.Column(db.String(255), primary_key=True)
-    state = db.Column(db.String(255), nullable=False)
-    country = db.Column(db.String(255), nullable=False)
-    total_cases = db.Column(db.Integer)
-    suspects = db.Column(db.Integer)
-    refuses = db.Column(db.Integer)
-    deaths = db.Column(db.Integer)
-    recovered = db.Column(db.Integer)
+    state_id = db.Column(db.Integer, db.ForeignKey('state.id'))
+    totalcases = db.Column(db.Integer)
+    state_data = relationship("State")
 
     def save(self, session, **kwargs):
-        model = City(**kwargs
-                     )
+        model = City(**kwargs)
         session.add(model)
         return model
 
     @property
     def active_cases(self):
-        return (self.total_cases - self.suspects -
-                self.refuses - self.deaths - self.recovered)
+        return (self.totalcases)
 
 
 class State(db.Model):
@@ -61,13 +57,14 @@ class StateCases(db.Model):
 
 
 class StatesPerDay(db.Model):
-    __tablename__ = 'states_per_day'
+    __tablename__ = 'casesstateperday'
     id = db.Column(db.String(255), primary_key=True)
     date = db.Column(db.Date)
     country = db.Column(db.String(255))
-    state = db.Column(db.String(255))
+    state_id = db.Column(db.Integer, db.ForeignKey('state.id'))
     newcases = db.Column(db.Integer)
     totalcases = db.Column(db.Integer)
+    state_data = relationship("State")
 
     def save(self, session, **kwargs):
         model = StatesPerDay(**kwargs)

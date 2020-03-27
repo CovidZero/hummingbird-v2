@@ -39,7 +39,7 @@ class TestDataApi(TestCase):
             "lat": 12.0001,
             "lng": 25.0001,
             "cases": {
-                "activeCases": 1,
+                "totalCases": 1,
                 "deaths": 0
             }
         }, {
@@ -48,7 +48,7 @@ class TestDataApi(TestCase):
             "lat": 12.0001,
             "lng": 25.0001,
             "cases": {
-                "activeCases": 1,
+                "totalCases": 1,
                 "deaths": 0
             }
         }])

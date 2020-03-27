@@ -1,5 +1,6 @@
 from app import db
 from models import StateCases
+from sqlalchemy import func
 
 
 def get_all_state_cases():
@@ -22,6 +23,18 @@ def get_all_state_cases():
 
 def compile_state_cases(state_case):
     return {
-        "activeCases": state_case.totalcases,
+        "totalCases": state_case.totalcases,
         "deaths": state_case.deaths
     }
+
+
+def get_sum_state_cases():
+    return {
+        "totalCases": get_sum(StateCases.totalcases),
+        "totalCasesMS": get_sum(StateCases.totalcasesms),
+        "deaths": get_sum(StateCases.deaths)
+    }
+
+
+def get_sum(cases):
+    return db.session.query(func.sum(cases)).first()[0]
