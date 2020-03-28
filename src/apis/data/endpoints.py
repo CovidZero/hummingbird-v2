@@ -24,7 +24,7 @@ city_cases = data_endpoints.model('City Cases', {
 
 })
 
-pages_info = data_endpoints.model('Pages Info', {
+pagination = data_endpoints.model('Pagination Info', {
     'total_pages': fields.Integer(
         required=False, description='Total Pages'),
     'has_next': fields.Boolean(
@@ -40,10 +40,15 @@ pages_info = data_endpoints.model('Pages Info', {
 
 city_cases_response_list = data_endpoints.model('City Cases Response List', {
     'cases': fields.Nested(
-        city_cases, required=True, as_list=True,  description='Cases'),
-    'page_info': fields.Nested(
-        pages_info, required=True, description='Pages info')
+        city_cases, required=True, as_list=True,  description='Cases')
 })
+
+city_cases_response_paginated_list = data_endpoints.inherit(
+    'City Cases Response List Paginated', city_cases_response_list, {
+        'pagination': fields.Nested(
+            pagination, required=False, description='Pagination info')
+    }
+)
 
 city_cases_response_report = data_endpoints.model(
     'City Cases Response Report', {
@@ -120,10 +125,11 @@ class CityCasesList(Resource):
 class CityCasesPaginatedList(Resource):
     # TODO: has no tests
     @data_endpoints.doc('city_cases_paginated_list')
-    @data_endpoints.marshal_with(city_cases_response_list)
+    @data_endpoints.marshal_with(city_cases_response_paginated_list)
     def get(self, page):
         """Cases per city list paginated"""
-        return city_services.get_city_cases(page)
+        response = city_services.get_city_cases(page)
+        return response
 
 
 @data_endpoints.route('/city/report')

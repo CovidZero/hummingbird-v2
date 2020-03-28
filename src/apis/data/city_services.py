@@ -6,10 +6,10 @@ def get_city_cases(page):
     try:
         # TODO: unitests
         if page:
-            city_cases, pages_info = City().fetch_paginated(db.session, page)
+            city_cases, pagination = City().fetch_paginated(db.session, page)
         else:
             city_cases = City().fetch_all(db.session)
-            pages_info = {}
+            pagination = {}
         cases = []
         for c in city_cases:
             cases.append({
@@ -21,7 +21,7 @@ def get_city_cases(page):
             })
         return {
             'cases': cases,
-            'pages_info': pages_info,
+            'pagination': pagination,
         }
     finally:
         db.session.close()

@@ -15,7 +15,7 @@ class StatePerDaySeeder(Seeder):
                 'id': _id,
                 'date': DateGenerator('-15d', 'now'),
                 'country': 'Brazil',
-                'state': StateGeneratorRandom(),
+                'state_id': StateGeneratorRandom(),
                 'newcases': generator.Integer(start=0, end=12),
                 'totalcases': generator.Integer(start=10, end=20)
 
@@ -28,7 +28,7 @@ class StatePerDaySeeder(Seeder):
                 'id': _id,
                 'date': DateGenerator('-15d', 'now'),
                 'country': 'Brazil',
-                'state': 'TOTAL',
+                'state_id': 'TOTAL',
                 'newcases': generator.Integer(start=0, end=12),
                 'totalcases': generator.Integer(start=10, end=20)
 
