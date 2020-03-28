@@ -14,6 +14,7 @@ def get_city_cases(page):
         for c in city_cases:
             cases.append({
                 'city': c.city,
+                'ibge_id': c.ibge_id,
                 'country': c.country,
                 'state_id': c.state_id,
                 'totalcases': c.totalcases

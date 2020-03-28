@@ -17,6 +17,7 @@ headers.add_argument(
 city_cases = data_endpoints.model('City Cases', {
     'id': fields.Integer(required=True, description='Id'),
     'city': fields.String(required=True, description='City'),
+    'ibge_id': fields.String(required=True, description='IBGE Id'),
     'country': fields.String(required=True, description='Country'),
     'state_id': fields.Integer(required=True, description='State Id'),
     'totalcases': fields.Integer(required=True, description='Total cases'),

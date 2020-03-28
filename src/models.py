@@ -10,6 +10,7 @@ class City(db.Model):
     city = db.Column(db.String(255), primary_key=True)
     state_id = db.Column(db.Integer, db.ForeignKey('state.id'))
     totalcases = db.Column(db.Integer)
+    ibge_id = db.Column(db.Integer)
     state_data = relationship("State")
 
     def save(self, session, **kwargs):
