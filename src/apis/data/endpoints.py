@@ -1,5 +1,4 @@
 from flask_restplus import Namespace, Resource, fields, abort
-from apis.data.services import ReportService
 from apis.data import state_services
 from apis.data import city_services
 
@@ -148,7 +147,7 @@ class CityCasesReport(Resource):
     @data_endpoints.marshal_with(city_cases_response_report)
     def get(self):
         """Cases per city report"""
-        response = ReportService().get_totals_cases_per_city()
+        response = city_services.get_totals_cases_per_city()
         if response.get('totalCases') == 0:
             abort(404, "No cases found")
 
@@ -159,7 +158,7 @@ class CityCasesReport(Resource):
 class GetCityCasesTotalsFiltered(Resource):
     def get(self, term):
         """Cases per city report, filtered by city term"""
-        response = ReportService().search_on_location_by_term(term)
+        response = city_services.search_on_location_by_term(term)
 
         if not response:
             abort(404, f"No cases found for city {term}")

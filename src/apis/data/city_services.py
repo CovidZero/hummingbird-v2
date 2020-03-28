@@ -1,10 +1,15 @@
 from app import db
 from models import City
 
+RESTRAINED_CITIES = [
+    'NÃO ESPECIFICADA',
+    'FORA DO ESTADO',
+    'ESTRANGEIRO'
+]
+
 
 def get_city_cases(page):
     try:
-        # TODO: unitests
         if page:
             city_cases, pagination = City().fetch_paginated(db.session, page)
         else:
@@ -12,16 +17,50 @@ def get_city_cases(page):
             pagination = {}
         cases = []
         for c in city_cases:
-            cases.append({
-                'city': c.city,
-                'ibge_id': c.ibge_id,
-                'country': c.country,
-                'state_id': c.state_id,
-                'totalcases': c.totalcases
-            })
+            if c.city not in RESTRAINED_CITIES:
+                cases.append({
+                    'city': c.city,
+                    'ibge_id': c.ibge_id,
+                    'country': c.country,
+                    'state_id': c.state_id,
+                    'totalcases': c.totalcases
+                })
         return {
             'cases': cases,
             'pagination': pagination,
         }
     finally:
         db.session.close()
+
+
+def search_on_location_by_term(query):
+    global current_case
+    cases = City.query.filter((City.city.like(query))).all()
+
+    result = []
+
+    for case in cases:
+        if case.city not in RESTRAINED_CITIES:
+            current_case = {
+                'city': case.city,
+                'state': case.state_data.name,
+                'cases': {
+                    'totalCases': case.totalcases
+                }
+            }
+        result.append(current_case)
+
+    return result
+
+
+def get_totals_cases_per_city():
+    all_cases = City.query.all()
+    return compile_cases(all_cases)
+
+
+def compile_cases(data):
+    total_cases = sum(
+        [city.totalcases
+         for city in data]) or 0
+
+    return {'totalCases': total_cases}

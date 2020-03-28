@@ -176,7 +176,6 @@ class TestDataApi(TestCase):
         response = json.loads(resp.get_data(as_text=True))
 
         self.assertEqual(resp.status_code, 200)
-        self.maxDiff = None
         self.assertEqual(response, {
             'cases': [{
                 'id': None,
