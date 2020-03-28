@@ -52,3 +52,9 @@ class TestDataApi(TestCase):
                 "deaths": 0
             }
         }])
+
+    def test_if_returns_when_state_cases_not_exists(self):
+        result = state_services.get_state_cases()
+
+        self.assertEqual(len(result), 0)
+        self.assertEqual(result, [])
