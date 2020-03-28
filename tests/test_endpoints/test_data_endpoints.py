@@ -27,7 +27,7 @@ class TestDataApi(TestCase):
     def tearDown(self):
         clear_db(self.db)
 
-    def test_return_all_state_cases_cases(self):
+    def test_return_all_cases_per_state(self):
         State().save(self.db.session, abbreviation='SP', name='São Paulo',
                      lat=12.0001, lng=25.0001)
         State().save(self.db.session, abbreviation='MG', name='Minas Gerais',
@@ -41,7 +41,7 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         resp = self.client.get(
-            '/data_api/v1/data/state/cases/all',
+            '/data_api/v1/cases/state',
             headers={
                 'Authorization': f"Bearer {self.authentication['access_token']}"
             }

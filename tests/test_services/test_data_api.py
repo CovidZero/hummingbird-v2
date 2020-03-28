@@ -40,13 +40,12 @@ class TestDataApi(TestCase):
                           deaths=8, url='https://some_url.com.br')
         self.db.session.commit()
         resp = self.client.get(
-            '/data_api/v1/data/all',
+            '/data_api/v1/cases/state/report',
             headers={
                 'Authorization': f"Bearer {self.authentication['access_token']}"
             }
         )
         data = json.loads(resp.get_data(as_text=True))
-
 
         self.assertEqual(data, {
             'totalCases': '6',
@@ -67,7 +66,7 @@ class TestDataApi(TestCase):
         self.db.session.commit()
 
         resp = self.client.get(
-            '/data_api/v1/data/search/c1',
+            '/data_api/v1/cases/city/c1/report',
             headers={
                 'Authorization': f"Bearer {self.authentication['access_token']}"
             }

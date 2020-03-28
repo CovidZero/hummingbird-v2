@@ -3,7 +3,7 @@ from models import StateCases
 from sqlalchemy import func
 
 
-def get_all_state_cases():
+def get_state_cases():
     try:
         state_cases = StateCases().fetch_all(db.session)
         result = []

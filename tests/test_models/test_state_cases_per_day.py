@@ -1,7 +1,7 @@
 import datetime
 from unittest import TestCase
 from app import app, db
-from models import StatesPerDay
+from models import StateCasesPerDay
 from tests.runner import clear_db
 
 
@@ -19,9 +19,9 @@ class TestStatesPerDayMethods(TestCase):
         clear_db(self.db)
 
     def test_if_save_method_saves_states_per_day_on_database(self):
-        StatesPerDay().save(self.db.session, id=1, date=datetime.date.today(),
-                            country='Brasil', state_id=1, newcases=35, totalcases=3)
+        StateCasesPerDay().save(self.db.session, id=1, date=datetime.date.today(),
+                                country='Brasil', state_id=1, newcases=35, totalcases=3)
         self.db.session.commit()
-        _model = self.db.session.query(StatesPerDay).filter_by(
+        _model = self.db.session.query(StateCasesPerDay).filter_by(
             state_id=1).first()
         self.assertIsNotNone(_model)

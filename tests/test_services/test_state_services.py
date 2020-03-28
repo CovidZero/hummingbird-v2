@@ -31,7 +31,7 @@ class TestDataApi(TestCase):
                           totalcasesms=1, notconfirmedbyms=0,
                           deaths=0, url='https://some_url.com.br')
         self.db.session.commit()
-        result = state_services.get_all_state_cases()
+        result = state_services.get_state_cases()
         self.assertEqual(len(result), 2)
         self.assertEqual(result, [{
             "stateCode": "SP",

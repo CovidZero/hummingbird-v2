@@ -2,7 +2,7 @@ from flask_seeder import Seeder, Faker, generator
 from models import StateCases
 
 
-class StatePerDaySeeder(Seeder):
+class StateCasesSeeder(Seeder):
 
     def run(self):
         _id = generator.Sequence()
@@ -12,7 +12,8 @@ class StatePerDaySeeder(Seeder):
             cls=StateCases,
             init={
                 'id': _id,
-                'state': __id,
+                'country': 'Brazil',
+                'state_id': __id,
                 'totalcases': generator.Integer(start=10, end=20),
                 'totalcasesms': generator.Integer(start=1, end=10),
                 'notconfirmedbyms': generator.Integer(start=1, end=10),
@@ -26,7 +27,8 @@ class StatePerDaySeeder(Seeder):
             cls=StateCases,
             init={
                 'id': _id,
-                'state': __id,
+                'country': 'Brazil',
+                'state_id': __id,
                 'totalcases': 100,
                 'totalcasesms': 50,
                 'notconfirmedbyms': 50,

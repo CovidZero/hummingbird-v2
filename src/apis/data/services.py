@@ -20,7 +20,7 @@ class ReportService:
 
         return result
 
-    def get_all_city_cases(self):
+    def get_totals_cases_per_city(self):
         all_cases = City.query.all()
         return compile_cases(all_cases)
 

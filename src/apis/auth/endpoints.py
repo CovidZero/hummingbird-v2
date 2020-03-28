@@ -65,8 +65,7 @@ docs = {
 }
 
 
-@auth_endpoints.route('/create_tokens',
-                      doc={"description": docs['get_tokens']})
+@auth_endpoints.route('/create_tokens', doc=False)
 class CreateTokens(Resource):
     @auth_endpoints.doc('access_token')
     @auth_endpoints.expect(create_tokens_request, validate=True)
@@ -76,8 +75,7 @@ class CreateTokens(Resource):
         return create_tokens(auth_endpoints.payload)
 
 
-@auth_endpoints.route('/refresh_access_token',
-                      doc={"description": docs['refresh_access_token']})
+@auth_endpoints.route('/refresh_access_token', doc=False)
 @auth_endpoints.expect(headers)
 class RefreshAccessToken(Resource):
     @jwt_refresh_token_required

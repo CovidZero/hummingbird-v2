@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy.orm import relationship
+from sqlalchemy_pagination import paginate
 
 
 class City(db.Model):
@@ -18,7 +19,24 @@ class City(db.Model):
 
     @property
     def active_cases(self):
-        return (self.totalcases)
+        return self.totalcases
+
+    def fetch_all(self, session):
+        return session.query(self.__class__).all()
+
+    def fetch_paginated(self, session, page_number):
+        query = session.query(self.__class__)
+        paginator = paginate(query, int(page_number), 25)
+        if int(page_number) > paginator.pages:
+            return [], None
+        pages_info = {
+            'total_pages': paginator.pages,
+            'has_next': paginator.has_next,
+            'has_previous': paginator.has_previous,
+            'next_page': paginator.next_page,
+            'current_page': page_number,
+        }
+        return paginator.items, pages_info
 
 
 class State(db.Model):
@@ -56,7 +74,7 @@ class StateCases(db.Model):
         return session.query(self.__class__).all()
 
 
-class StatesPerDay(db.Model):
+class StateCasesPerDay(db.Model):
     __tablename__ = 'casesstateperday'
     id = db.Column(db.String(255), primary_key=True)
     date = db.Column(db.Date)
@@ -67,7 +85,7 @@ class StatesPerDay(db.Model):
     state_data = relationship("State")
 
     def save(self, session, **kwargs):
-        model = StatesPerDay(**kwargs)
+        model = StateCasesPerDay(**kwargs)
         session.add(model)
         return model
 

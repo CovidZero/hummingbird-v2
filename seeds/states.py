@@ -12,8 +12,7 @@ class StateSeeder(Seeder):
             cls=State,
             init={
                 'id': _id,
-                'country': 'Brazil',
-                'state': StateGeneratorSequence(),
+                'name': StateGeneratorSequence(),
                 'lat': "99.000",
                 'lng': "99.000",
 
@@ -24,8 +23,7 @@ class StateSeeder(Seeder):
             cls=State,
             init={
                 'id': _id,
-                'country': 'Brazil',
-                'state': 'Total',
+                'name': 'Total',
                 'lat': f"00.000",
                 'lng': f"00.000",
 
