@@ -1,8 +1,7 @@
-from flask_restplus import Namespace, Resource, fields
+from flask_restplus import Namespace, Resource, fields, abort
 from apis.data.services import ReportService
 from apis.data import state_services
 from apis.data import city_services
-
 
 data_endpoints = Namespace('cases', description='Cases related operations')
 
@@ -40,7 +39,7 @@ pagination = data_endpoints.model('Pagination Info', {
 
 city_cases_response_list = data_endpoints.model('City Cases Response List', {
     'cases': fields.Nested(
-        city_cases, required=True, as_list=True,  description='Cases')
+        city_cases, required=True, as_list=True, description='Cases')
 })
 
 city_cases_response_paginated_list = data_endpoints.inherit(
@@ -63,7 +62,6 @@ city_cases_response_list_report = data_endpoints.model(
             required=True, description='Total cases')
     }
 )
-
 
 cases_detail_response = data_endpoints.model(
     'State Cases Detail Response',
@@ -99,7 +97,10 @@ class ListStateCases(Resource):
     @data_endpoints.marshal_with(all_state_cases_response)
     def get(self):
         """List cases per state"""
-        return state_services.get_state_cases()
+        response = state_services.get_state_cases()
+        if not response:
+            abort(404, "No cases found for states")
+        return response
 
 
 @data_endpoints.route('/state/report')
@@ -108,46 +109,62 @@ class GetStateCasesTotals(Resource):
     @data_endpoints.marshal_with(sum_all_cases_response)
     def get(self):
         """Cases per state report"""
-        return state_services.get_sum_state_cases()
+        response = state_services.get_sum_state_cases()
+        if not all(report for report in response.values()):
+            abort(404, "No report found for states")
+
+        return response
 
 
 @data_endpoints.route('/city')
 class CityCasesList(Resource):
-    # TODO: has no tests
     @data_endpoints.doc('city_cases_list')
     @data_endpoints.marshal_with(city_cases_response_list)
     def get(self):
         """Cases per city list"""
-        return city_services.get_city_cases(None)
+        response = city_services.get_city_cases(None)
+        if not response.get('cases'):
+            abort(404, "No cases found")
+        return response
 
 
 @data_endpoints.route('/city/<int:page>')
 class CityCasesPaginatedList(Resource):
-    # TODO: has no tests
     @data_endpoints.doc('city_cases_paginated_list')
     @data_endpoints.marshal_with(city_cases_response_paginated_list)
     def get(self, page):
         """Cases per city list paginated"""
         response = city_services.get_city_cases(page)
+
+        if not response.get('cases'):
+            abort(404, "No cases found for this page")
+
         return response
 
 
 @data_endpoints.route('/city/report')
 class CityCasesReport(Resource):
-    # TODO: has no tests
     @data_endpoints.doc('city_cases_report')
     @data_endpoints.marshal_with(city_cases_response_report)
     def get(self):
         """Cases per city report"""
-        return ReportService().get_totals_cases_per_city()
+        response = ReportService().get_totals_cases_per_city()
+        if response.get('totalCases') == 0:
+            abort(404, "No cases found")
+
+        return response
 
 
 @data_endpoints.route('/city/<string:term>/report')
 class GetCityCasesTotalsFiltered(Resource):
-    # TODO: has no tests
     def get(self, term):
         """Cases per city report, filtered by city term"""
-        return ReportService().search_on_location_by_term(term)
+        response = ReportService().search_on_location_by_term(term)
+
+        if not response:
+            abort(404, f"No cases found for city {term}")
+
+        return response
 
 
 def bind(api):
