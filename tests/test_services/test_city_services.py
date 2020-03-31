@@ -21,9 +21,9 @@ class TestCityServices(TestCase):
 
     def test_city_cases_return_all_cases_without_pagination(self):
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.get_city_cases(None)
@@ -33,14 +33,18 @@ class TestCityServices(TestCase):
             'cases': [{
                 'city': 'c1',
                 'ibge_id': 1,
+                'id': 1,
                 'country': 'Country1',
+                'deaths': 1,
                 'state_id': 1,
                 'totalcases': 10
             }, {
                 'city': 'c2',
                 'ibge_id': 2,
+                'id': 2,
                 'country': 'Country1',
                 'state_id': 1,
+                'deaths': 1,
                 'totalcases': 20
             }],
             'pagination': {}})
@@ -48,9 +52,9 @@ class TestCityServices(TestCase):
     def test_search_on_location_by_term_returns_data_when_exists(self):
         State().save(self.db.session, id=1, name="state1", abbreviation="s1", lat=0, lng=0)
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.search_on_location_by_term('c1')
@@ -59,7 +63,8 @@ class TestCityServices(TestCase):
         self.assertEqual(response, [{'city': 'c1',
                                      'state': 'state1',
                                      'cases': {
-                                         'totalCases': 10
+                                         'totalCases': 10,
+                                         'deaths': 1
                                      }}])
 
     def test_search_on_location_by_term_returns_Null_when_not_exists(self):
@@ -77,9 +82,9 @@ class TestCityServices(TestCase):
 
     def test_city_cases_return_cases_with_pagination(self):
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.get_city_cases(1)
@@ -89,13 +94,17 @@ class TestCityServices(TestCase):
             'cases': [{
                 'city': 'c1',
                 'ibge_id': 1,
+                'id': 1,
                 'country': 'Country1',
+                'deaths': 1,
                 'state_id': 1,
                 'totalcases': 10
             }, {
                 'city': 'c2',
                 'ibge_id': 2,
+                'id': 2,
                 'country': 'Country1',
+                'deaths': 1,
                 'state_id': 1,
                 'totalcases': 20
             }],
@@ -107,15 +116,15 @@ class TestCityServices(TestCase):
 
     def test_city_cases_return_cases_without_restrained_cities(self):
         City().save(self.db.session, id=1, city='NÃO ESPECIFICADA', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='FORA DO ESTADO', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
 
         City().save(self.db.session, id=3, city='ESTRANGEIRO', ibge_id=3,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
 
         City().save(self.db.session, id=4, city='c1', ibge_id=4,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.get_city_cases(None)
@@ -124,7 +133,9 @@ class TestCityServices(TestCase):
         self.assertEqual(response, {
             'cases': [{
                 'city': 'c1',
+                'deaths': 1,
                 'ibge_id': 4,
+                'id': 4,
                 'country': 'Country1',
                 'state_id': 1,
                 'totalcases': 20
@@ -133,15 +144,13 @@ class TestCityServices(TestCase):
 
     def test_city_cases_paginated_return_cases_without_restrained_cities(self):
         City().save(self.db.session, id=1, city='NÃO ESPECIFICADA', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='FORA DO ESTADO', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=10)
-
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=3, city='ESTRANGEIRO', ibge_id=3,
-                    country='Country1', state_id=1, totalcases=10)
-
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=4, city='c1', ibge_id=4,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.get_city_cases(1)
@@ -151,7 +160,9 @@ class TestCityServices(TestCase):
             'cases': [{
                 'city': 'c1',
                 'ibge_id': 4,
+                'id': 4,
                 'country': 'Country1',
+                'deaths': 1,
                 'state_id': 1,
                 'totalcases': 20
             }],
@@ -165,15 +176,15 @@ class TestCityServices(TestCase):
     def test_search_on_location_by_term_return_cases_without_restrained_cities(self):
         State().save(self.db.session, id=1, name="state1", abbreviation="s1", lat=0, lng=0)
         City().save(self.db.session, id=1, city='NÃO ESPECIFICADA', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='FORA DO ESTADO', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
 
         City().save(self.db.session, id=3, city='ESTRANGEIRO', ibge_id=3,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
 
         City().save(self.db.session, id=4, city='c1', ibge_id=4,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.search_on_location_by_term('c1')
@@ -183,23 +194,24 @@ class TestCityServices(TestCase):
             'city': 'c1',
             'state': 'state1',
             'cases': {
-                'totalCases': 20
+                'totalCases': 20,
+                'deaths': 1
             }
         }])
 
     def test_get_totals_cases_per_city_ignore_restrained_cities(self):
         City().save(self.db.session, id=1, city='NÃO ESPECIFICADA', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='FORA DO ESTADO', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
 
         City().save(self.db.session, id=3, city='ESTRANGEIRO', ibge_id=3,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
 
         City().save(self.db.session, id=4, city='c1', ibge_id=4,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         response = city_services.get_totals_cases_per_city()
 
-        self.assertEqual(response, {'totalCases': 50})
+        self.assertEqual(response, {'totalCases': 50, 'deaths': 4})

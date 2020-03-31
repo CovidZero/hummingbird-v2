@@ -19,11 +19,13 @@ def get_city_cases(page):
         for c in city_cases:
             if c.city not in RESTRAINED_CITIES:
                 cases.append({
+                    'id': c.id,
                     'city': c.city,
                     'ibge_id': c.ibge_id,
                     'country': c.country,
                     'state_id': c.state_id,
-                    'totalcases': c.totalcases
+                    'totalcases': c.totalcases,
+                    'deaths': c.deaths
                 })
         return {
             'cases': cases,
@@ -45,7 +47,8 @@ def search_on_location_by_term(query):
                 'city': case.city,
                 'state': case.state_data.name,
                 'cases': {
-                    'totalCases': case.totalcases
+                    'totalCases': case.totalcases,
+                    'deaths': case.deaths
                 }
             }
         result.append(current_case)
@@ -62,5 +65,11 @@ def compile_cases(data):
     total_cases = sum(
         [city.totalcases
          for city in data]) or 0
+    deaths = sum(
+        [city.deaths
+         for city in data]) or 0
 
-    return {'totalCases': total_cases}
+    return {
+        'totalCases': total_cases,
+        'deaths': deaths
+    }

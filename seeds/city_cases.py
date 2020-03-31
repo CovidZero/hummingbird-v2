@@ -13,6 +13,7 @@ class CityCasesSeeder(Seeder):
                 'ibge_id': generator.Integer(start=300000, end=399999),
                 'country': 'Brazil',
                 'city': 'Test',
+                'deaths': 1,
                 'state_id': generator.Integer(start=2, end=28),
                 'totalcases': generator.Integer(start=1, end=10)
 

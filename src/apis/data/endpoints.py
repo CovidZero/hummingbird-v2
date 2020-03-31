@@ -19,6 +19,7 @@ city_cases = data_endpoints.model('City Cases', {
     'country': fields.String(required=True, description='Country'),
     'state_id': fields.Integer(required=True, description='State Id'),
     'totalcases': fields.Integer(required=True, description='Total cases'),
+    'deaths': fields.Integer(required=True, description='Deaths')
 
 })
 
@@ -51,7 +52,9 @@ city_cases_response_paginated_list = data_endpoints.inherit(
 city_cases_response_report = data_endpoints.model(
     'City Cases Response Report', {
         'totalCases': fields.Integer(
-            required=True, description='Total cases')
+            required=True, description='Total cases'),
+        'deaths': fields.Integer(
+            required=True, description='Deaths')
     }
 )
 

@@ -59,10 +59,10 @@ class TestDataApi(TestCase):
                      lat=12.0001, lng=25.0001)
         City().save(
             self.db.session, id=1, city="c1", state_id=1,
-            country="c1", totalcases=20)
+            country="c1", totalcases=20, deaths=1)
         City().save(
             self.db.session, id=2, city="c2", state_id=2,
-            country="c1", totalcases=20)
+            country="c1", totalcases=20, deaths=1)
         self.db.session.commit()
 
         resp = self.client.get(
@@ -73,10 +73,4 @@ class TestDataApi(TestCase):
         )
         data = json.loads(resp.get_data())
         self.assertEqual(len(data), 1)
-        self.assertEqual(data, [{
-            'city': 'c1',
-            'state': 'São Paulo',
-            'cases': {
-                'totalCases': 20,
-            }
-        }])
+        self.assertEqual(data, [{'city': 'c1', 'state': 'São Paulo', 'cases': {'totalCases': 20, 'deaths': 1}}])

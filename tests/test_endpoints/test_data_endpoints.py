@@ -117,9 +117,9 @@ class TestDataApi(TestCase):
 
     def test_return_all_city_cases(self):
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         resp = self.client.get(
@@ -134,15 +134,17 @@ class TestDataApi(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(response, {
             'cases': [{
-                'id': None,
+                'id': 1,
                 'city': 'c1',
+                'deaths': 1,
                 'ibge_id': '1',
                 'country': 'Country1',
                 'state_id': 1,
                 'totalcases': 10
             }, {
-                'id': None,
+                'id': 2,
                 'city': 'c2',
+                'deaths': 1,
                 'ibge_id': '2',
                 'country': 'Country1',
                 'state_id': 1,
@@ -162,9 +164,9 @@ class TestDataApi(TestCase):
 
     def test_return_all_city_cases_paginated(self):
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         resp = self.client.get(
@@ -178,15 +180,17 @@ class TestDataApi(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(response, {
             'cases': [{
-                'id': None,
+                'id': 1,
                 'city': 'c1',
+                'deaths': 1,
                 'ibge_id': '1',
                 'country': 'Country1',
                 'state_id': 1,
                 'totalcases': 10
             }, {
-                'id': None,
+                'id': 2,
                 'city': 'c2',
+                'deaths': 1,
                 'ibge_id': '2',
                 'country': 'Country1',
                 'state_id': 1,
@@ -216,9 +220,9 @@ class TestDataApi(TestCase):
 
     def test_return_all_city_reports(self):
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         resp = self.client.get(
@@ -230,7 +234,7 @@ class TestDataApi(TestCase):
         response = json.loads(resp.get_data(as_text=True))
 
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(response, {'totalCases': 30})
+        self.assertEqual(response, {'totalCases': 30, 'deaths': 2})
 
     def test_city_report_return_404_when_data_is_empty(self):
         resp = self.client.get(
@@ -245,9 +249,9 @@ class TestDataApi(TestCase):
     def test_return_city_report_by_term_when_data_exists(self):
         State().save(self.db.session, id=1, name="state1", abbreviation="s1", lat=0, lng=0)
         City().save(self.db.session, id=1, city='c1', ibge_id=1,
-                    country='Country1', state_id=1, totalcases=10)
+                    country='Country1', state_id=1, totalcases=10, deaths=1)
         City().save(self.db.session, id=2, city='c2', ibge_id=2,
-                    country='Country1', state_id=1, totalcases=20)
+                    country='Country1', state_id=1, totalcases=20, deaths=1)
         self.db.session.commit()
 
         resp = self.client.get(
@@ -259,7 +263,9 @@ class TestDataApi(TestCase):
         response = json.loads(resp.get_data(as_text=True))
 
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(response, [{'city': 'c1', 'state': 'state1', 'cases': {'totalCases': 10}}])
+        self.assertEqual(response, [
+            {'city': 'c1', 'state': 'state1', 'cases': {'totalCases': 10, 'deaths': 1}
+        }])
 
     def test_return_404_when_city_report_by_term_not_exists(self):
         State().save(self.db.session, id=1, name="state1", abbreviation="s1", lat=0, lng=0)
