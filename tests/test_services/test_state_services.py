@@ -1,7 +1,9 @@
+import datetime
 from app import app, db
 from unittest import TestCase
 from models import State
 from models import StateCases
+from models import StateCasesPerDay
 from apis.data import state_services
 from tests.runner import clear_db
 
@@ -58,3 +60,49 @@ class TestDataApi(TestCase):
 
         self.assertEqual(len(result), 0)
         self.assertEqual(result, [])
+
+    def test_if_returns_a_daily_state_list_with_pagination(self):
+        State().save(self.db.session, abbreviation='SP',
+                     name='São Paulo',
+                     lat=12.0001, lng=25.0001)
+        StateCasesPerDay().save(self.db.session, id=1, date=datetime.date(2020, 3, 29),
+                                country='Brazil', state_id=1, newcases=3, totalcases=35)
+        StateCasesPerDay().save(self.db.session, id=2, date=datetime.date(2020, 3, 30),
+                                country='Brazil', state_id=1, newcases=3, totalcases=38)
+        self.db.session.commit()
+        result = state_services.get_daily_state_cases(1)
+        self.assertEqual(result, {
+            'cases': [
+                {
+                    "stateCode": "SP",
+                    "stateName": "São Paulo",
+                    "lat": 12.0001,
+                    "lng": 25.0001,
+                    "country": "Brazil",
+                    "date": "2020-03-29",
+                    "case_detail": {
+                        "newCases": 3,
+                        "totalCases": 35
+                    }
+                },
+                {
+                    "stateCode": "SP",
+                    "stateName": "São Paulo",
+                    "lat": 12.0001,
+                    "lng": 25.0001,
+                    "country": "Brazil",
+                    "date": "2020-03-30",
+                    "case_detail": {
+                        "newCases": 3,
+                        "totalCases": 38
+                    }
+                }
+            ],
+            'pagination': {
+                'total_pages': 1,
+                'has_next': False,
+                'has_previous': False,
+                'next_page': None,
+                'current_page': 1,
+            }
+        })

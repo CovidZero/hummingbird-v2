@@ -1,7 +1,8 @@
 import json
+import datetime
 from unittest import TestCase
 from app import app, db
-from models import City, CasesLocation, State, StateCases
+from models import State, StateCases, StateCasesPerDay
 from tests.runner import clear_db
 
 
@@ -53,24 +54,40 @@ class TestDataApi(TestCase):
             'deaths': '8'
         })
 
-    def test_return_cases_by_search_city(self):
+    def test_endpoint_list_state_cases_daily(self):
         # Seed test data
-        State().save(self.db.session, abbreviation='SP', name='São Paulo',
+        State().save(self.db.session, abbreviation='SP',
+                     name='São Paulo',
                      lat=12.0001, lng=25.0001)
-        City().save(
-            self.db.session, id=1, city="c1", state_id=1,
-            country="c1", totalcases=20, deaths=1)
-        City().save(
-            self.db.session, id=2, city="c2", state_id=2,
-            country="c1", totalcases=20, deaths=1)
+        StateCasesPerDay().save(self.db.session, id=1, date=datetime.date(2020, 3, 29),
+                                country='Brazil', state_id=1, newcases=3, totalcases=35)
         self.db.session.commit()
-
         resp = self.client.get(
-            '/data_api/v1/cases/city/c1/report',
+            '/data_api/v1/cases/state/daily/1',
             headers={
                 'Authorization': f"Bearer {self.authentication['access_token']}"
             }
         )
-        data = json.loads(resp.get_data())
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data, [{'city': 'c1', 'state': 'São Paulo', 'cases': {'totalCases': 20, 'deaths': 1}}])
+        result = json.loads(resp.get_data(as_text=True))
+        self.assertEqual(result, {"cases": [{
+                 "stateCode": "SP",
+                 "stateName": "São Paulo",
+                 "lat": "12.0001",
+                 "lng": "25.0001",
+                 "country": "Brazil",
+                 "date": "2020-03-29",
+                 "case_detail": {
+                     "totalCases": 35,
+                     "newCases": 3
+                 }}
+            ],
+            "pagination": {
+                "total_pages": 1,
+                "has_next": False,
+                "has_previous": False,
+                "next_page": None,
+                "current_page": 1
+            }
+        })
+
+

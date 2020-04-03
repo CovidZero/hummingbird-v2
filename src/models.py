@@ -91,6 +91,23 @@ class StateCasesPerDay(db.Model):
         session.add(model)
         return model
 
+    def fetch_all(self, session):
+        return session.query(self.__class__).all()
+
+    def fetch_paginated(self, session, page_number):
+        query = session.query(self.__class__)
+        paginator = paginate(query, int(page_number), 25)
+        if int(page_number) > paginator.pages:
+            return [], None
+        pages_info = {
+            'total_pages': paginator.pages,
+            'has_next': paginator.has_next,
+            'has_previous': paginator.has_previous,
+            'next_page': paginator.next_page,
+            'current_page': page_number,
+        }
+        return paginator.items, pages_info
+
 
 class TestPoint(db.Model):
     __tablename__ = 'TEST_POINT'

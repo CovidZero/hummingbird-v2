@@ -172,7 +172,6 @@ class TestCityServices(TestCase):
                            'next_page': None,
                            'total_pages': 1}})
 
-
     def test_search_on_location_by_term_return_cases_without_restrained_cities(self):
         State().save(self.db.session, id=1, name="state1", abbreviation="s1", lat=0, lng=0)
         City().save(self.db.session, id=1, city='NÃO ESPECIFICADA', ibge_id=1,
