@@ -47,6 +47,7 @@ $ git remote add upstream https://github.com/CovidZero/hummingbird-v2.git
 **4. Create a development branch**.
 
 ```console
+$ git checkout staging
 $ git checkout -b <YOUR-FEATURE-BRANCH>
 ```
 
