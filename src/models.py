@@ -55,6 +55,42 @@ class State(db.Model):
         return model
 
 
+class DataSus(db.Model):
+    __tablename__ = 'datasus'
+    id = db.Column(db.Integer, primary_key=True)
+    region = db.Column(db.String)
+    state = db.Column(db.String)
+    date = db.Column(db.Date)
+    newcases = db.Column(db.Integer)
+    totalcases = db.Column(db.Integer)
+    newdeaths = db.Column(db.Integer)
+    totaldeaths = db.Column(db.Integer)
+    update = db.Column(db.DateTime)
+
+    def save(self, session, **kwargs):
+        model = DataSus(**kwargs)
+        session.add(model)
+        return model
+
+    def fetch_all(self, session):
+        return session.query(self.__class__).all()
+
+    def fetch_paginated(self, session, page_number):
+        query = session.query(self.__class__)
+        paginator = paginate(query, int(page_number), 25)
+        if int(page_number) > paginator.pages:
+            return [], None
+
+        pages_info = {
+            'total_pages': paginator.pages,
+            'has_next': paginator.has_next,
+            'has_previous': paginator.has_previous,
+            'next_page': paginator.next_page,
+            'current_page': page_number,
+        }
+        return paginator.items, pages_info
+
+
 class StateCases(db.Model):
     __tablename__ = 'casesperstate'
     id = db.Column(db.Integer, primary_key=True)
@@ -74,6 +110,21 @@ class StateCases(db.Model):
 
     def fetch_all(self, session):
         return session.query(self.__class__).all()
+
+    def fetch_paginated(self, session, page_number):
+        query = session.query(self.__class__)
+        paginator = paginate(query, int(page_number), 25)
+        if int(page_number) > paginator.pages:
+            return [], None
+
+        pages_info = {
+            'total_pages': paginator.pages,
+            'has_next': paginator.has_next,
+            'has_previous': paginator.has_previous,
+            'next_page': paginator.next_page,
+            'current_page': page_number,
+        }
+        return paginator.items, pages_info
 
 
 class StateCasesPerDay(db.Model):
