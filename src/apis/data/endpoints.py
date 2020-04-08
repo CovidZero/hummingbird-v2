@@ -1,6 +1,7 @@
 from flask_restplus import Namespace, Resource, fields, abort
 from apis.data import state_services
 from apis.data import city_services
+from apis.data import datasus_services
 
 data_endpoints = Namespace('cases', description='Cases related operations')
 
@@ -41,6 +42,32 @@ city_cases_response_list = data_endpoints.model('City Cases Response List', {
     'cases': fields.Nested(
         city_cases, required=True, as_list=True, description='Cases')
 })
+
+datasus_list = data_endpoints.model('SUS Data', {
+    'id': fields.Integer(required=True, description='Id'),
+    'region': fields.String(required=True, description='Region'),
+    'state': fields.String(required=True, description='State'),
+    'date': fields.Date(required=True, description='Date'),
+    'newcases': fields.Integer(required=True, description='New cases'),
+    'totalcases': fields.Integer(required=True, description='Total cases'),
+    'newdeaths': fields.Integer(required=True, description='New Deaths'),
+    'totaldeaths': fields.Integer(required=True, description='Total Deaths'),
+    'update': fields.DateTime(required=False, description='Update Date')
+})
+
+datasus_response_list = data_endpoints.model('SUS Data Response List', {
+    'sus_list': fields.Nested(
+        datasus_list, required=True, as_list=True, descruption='SUS cases List'
+    )
+})
+
+datasus_response_paginated_list = data_endpoints.inherit(
+    'SUS Data Response List Paginated', datasus_response_list, {
+        'pagination': fields.Nested(
+            pagination, required=False, description='Pagination Info'
+        )
+    }
+)
 
 city_cases_response_paginated_list = data_endpoints.inherit(
     'City Cases Response List Paginated', city_cases_response_list, {
@@ -174,6 +201,32 @@ class ListStateCasesDaily(Resource):
         response = state_services.get_daily_state_cases(page)
         if not response:
             abort(404, "No cases found for states")
+        return response
+
+
+@data_endpoints.route('/datasus')
+class DataSusList(Resource):
+    @data_endpoints.doc('datasus_list')
+    @data_endpoints.marshal_with(datasus_response_list)
+    def get(self):
+        """SUS Data List"""
+        response = datasus_services.get_sus_list(None)
+        if not response.get('sus_list'):
+            abort(404, 'No data found')
+        return response
+
+
+@data_endpoints.route('/datasus/<int:page>')
+class DataSusPaginatedList(Resource):
+    @data_endpoints.doc('datasus_paginated_list')
+    @data_endpoints.marshal_with(datasus_response_paginated_list)
+    def get(self, page):
+        """SUS Data Paginated List"""
+        response = datasus_services.get_sus_list(page)
+
+        if not response.get('sus_list'):
+            abort(404, "No cases found for this page")
+
         return response
 
 
