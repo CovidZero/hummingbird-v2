@@ -4,7 +4,8 @@ from models import City
 RESTRAINED_CITIES = [
     'NÃO ESPECIFICADA',
     'FORA DO ESTADO',
-    'ESTRANGEIRO'
+    'ESTRANGEIRO',
+    'INDEFINIDA'
 ]
 
 
