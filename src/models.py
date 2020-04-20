@@ -55,6 +55,23 @@ class State(db.Model):
         return model
 
 
+class PredictCases(db.Model):
+    __tablename__ = 'predictcases'
+    id = db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String)
+    date = db.Column(db.Date)
+    predictcases = db.Column(db.Integer)
+    update = db.Column(db.DateTime)
+
+    def save(self, session, **kwargs):
+        model = PredictCases(**kwargs)
+        session.add(model)
+        return model
+
+    def fetch_all(self, session):
+        return session.query(self.__class__).all()
+
+
 class DataSus(db.Model):
     __tablename__ = 'datasus'
     id = db.Column(db.Integer, primary_key=True)

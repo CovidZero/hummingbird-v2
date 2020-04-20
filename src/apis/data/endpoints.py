@@ -2,6 +2,7 @@ from flask_restplus import Namespace, Resource, fields, abort
 from apis.data import state_services
 from apis.data import city_services
 from apis.data import datasus_services
+from apis.data import predictcases_services
 
 data_endpoints = Namespace('cases', description='Cases related operations')
 
@@ -53,6 +54,14 @@ datasus_list = data_endpoints.model('SUS Data', {
     'newdeaths': fields.Integer(required=True, description='New Deaths'),
     'totaldeaths': fields.Integer(required=True, description='Total Deaths'),
     'update': fields.DateTime(required=False, description='Update Date')
+})
+
+predictcases_list = data_endpoints.model('Predict Cases', {
+    'id': fields.Integer(required=True, description='Id'),
+    'state': fields.String(required=True, description='State'),
+    'date': fields.Date(required=True, description='Date'),
+    'predictcases': fields.Integer(required=True, description='Predict Cases'),
+    'update': fields.DateTime(required=False, description='Update')
 })
 
 datasus_response_list = data_endpoints.model('SUS Data Response List', {
@@ -166,6 +175,19 @@ state_cases_report_response = data_endpoints.model(
         'deaths': fields.String(required=True, description='Deaths'),
     }
 )
+
+
+@data_endpoints.route('/predict_cases')
+class ListPredictCases(Resource):
+    @data_endpoints.doc('predictcases')
+    @data_endpoints.marshal_with(predictcases_list)
+    def get(self):
+        """List predict cases"""
+        response = predictcases_services.get_predict_cases()
+        if not response:
+            abort(404, "Predict cases not found")
+
+        return response
 
 
 @data_endpoints.route('/state')
