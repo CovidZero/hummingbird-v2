@@ -64,7 +64,7 @@ Now it's your turn to shine and write meaningful code to raise the bar for the p
 **6. Commit yourself to your changes***.
 
 ```console
-$ git rebase <YOUT-FEATURE-BRANCH>
+$ git rebase <YOUR-FEATURE-BRANCH>
 $ git commit -m"My very nice contribution"
 ```
 
