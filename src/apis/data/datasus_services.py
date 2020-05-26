@@ -1,7 +1,6 @@
 from app import db
 from models import DataSus
-
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 
 def get_sus_list(page):
@@ -41,6 +40,31 @@ def get_graph_last_30_days():
         db.session.close()
 
 
+def get_graph_total_cases():
+    try:
+        subquery = DataSus.query.with_entities(
+            func.max(DataSus.date)).subquery()
+        total_cases = DataSus.query.filter(and_(DataSus.date == subquery,
+                                                DataSus.coduf == 76)) \
+            .with_entities(DataSus.region, DataSus.date, DataSus.totalcases,
+                           DataSus.totaldeaths) \
+            .all()
+
+        result = []
+        for region in total_cases:
+            current_region = {
+                'region': region.region,
+                'date': region.date,
+                'totalCases': region.totalcases,
+                'totalDeaths': region.totaldeaths
+            }
+            result.append(current_region)
+
+        return result
+    finally:
+        db.session.close()
+
+
 def get_regions():
     try:
         subquery = DataSus.query.with_entities(
@@ -49,9 +73,7 @@ def get_regions():
             .with_entities(DataSus.id, DataSus.region, DataSus.state,
                            DataSus.city, DataSus.coduf, DataSus.codmun,
                            DataSus.population, DataSus.date,
-                           DataSus.totalcases, DataSus.population,
-                           DataSus.date, DataSus.totalcases,
-                           DataSus.totaldeaths) \
+                           DataSus.totalcases, DataSus.totaldeaths) \
             .all()
 
         result = []

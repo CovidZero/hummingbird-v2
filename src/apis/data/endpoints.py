@@ -108,6 +108,17 @@ datasus_response_regions = data_endpoints.model(
     }
 )
 
+datasus_response_graphs_total_cases = data_endpoints.model(
+    'SUS Data Graph Total Cases', {
+        'date': fields.Date(required=True, description='Date'),
+        'region': fields.String(required=True, description='Region'),
+        'totalCases': fields.Integer(
+            required=True, description='Cases'),
+        'totalDeaths': fields.Integer(
+            required=True, description='Deaths')
+    }
+)
+
 city_cases_response_paginated_list = data_endpoints.inherit(
     'City Cases Response List Paginated', city_cases_response_list, {
         'pagination': fields.Nested(
@@ -289,6 +300,20 @@ class DataSusGraphsLast30Days(Resource):
     def get(self):
         """SUS Data Graphs Last 30 Days"""
         response = datasus_services.get_graph_last_30_days()
+
+        if not response:
+            abort(404, "No data found")
+
+        return response
+
+
+@data_endpoints.route('/datasus/graphs/total_cases')
+class DataSusGraphsTotalCases(Resource):
+    @data_endpoints.doc('datasus_graphs_total_cases')
+    @data_endpoints.marshal_with(datasus_response_graphs_total_cases)
+    def get(self):
+        """SUS Data Graph Total Cases"""
+        response = datasus_services.get_graph_total_cases()
 
         if not response:
             abort(404, "No data found")

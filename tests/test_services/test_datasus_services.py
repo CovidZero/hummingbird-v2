@@ -61,6 +61,35 @@ class TestDataSusServices(TestCase):
             self.assertIn('totalCases', current_date.keys())
             self.assertIn('totalDeaths', current_date.keys())
 
+    def test_sus_graphs_total_cases(self):
+        yesterday = datetime.date.today() - datetime.timedelta(days=1)
+        DataSus().save(self.db.session, id=1, region='region_1', state='state',
+                       city='city', coduf=1, codmun=2, population=100000,
+                       date=datetime.date.today(),
+                       newcases=1, totalcases=2, newdeaths=1, totaldeaths=1,
+                       update=datetime.date.today())
+        DataSus().save(self.db.session, id=2, region='region_2', state='state',
+                       city='city', coduf=1, codmun=2, population=100000,
+                       date=yesterday,
+                       newcases=1, totalcases=2, newdeaths=1, totaldeaths=1,
+                       update=yesterday)
+        DataSus().save(self.db.session, id=3, region='region_2', state='state',
+                       city='city', coduf=76, codmun=2, population=100000,
+                       date=datetime.date.today(),
+                       newcases=1, totalcases=2, newdeaths=1, totaldeaths=1,
+                       update=datetime.date.today())
+
+        self.db.session.commit()
+
+        response = datasus_services.get_graph_total_cases()
+
+        self.assertEqual(len(response), 1)
+        for current_date in response:
+            self.assertIn('region', current_date.keys())
+            self.assertIn('date', current_date.keys())
+            self.assertIn('totalCases', current_date.keys())
+            self.assertIn('totalDeaths', current_date.keys())
+
     def test_sus_regions(self):
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
         DataSus().save(self.db.session, id=1, region='region_1', state='state',
