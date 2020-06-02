@@ -84,7 +84,11 @@ datasus_response_graphs_last_30_days = data_endpoints.model(
         'totalCases': fields.Integer(
             required=True, description='Total cases'),
         'totalDeaths': fields.Integer(
-            required=True, description='Total deaths')
+            required=True, description='Total deaths'),
+        'newCases': fields.Integer(
+            required=True, description='New cases'),
+        'newDeaths': fields.Integer(
+            required=True, description='New deaths')
     }
 )
 
