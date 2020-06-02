@@ -23,7 +23,8 @@ def get_graph_last_30_days():
     try:
         last_30_days = DataSus.query.filter(DataSus.region == 'Brasil') \
             .with_entities(DataSus.date, DataSus.totalcases,
-                           DataSus.totaldeaths) \
+                           DataSus.totaldeaths, DataSus.newcases,
+                           DataSus.newdeaths) \
             .order_by(DataSus.date.desc()).limit(30).all()
 
         result = []
@@ -31,7 +32,9 @@ def get_graph_last_30_days():
             current_date = {
                 'date': day.date,
                 'totalCases': day.totalcases,
-                'totalDeaths': day.totaldeaths
+                'totalDeaths': day.totaldeaths,
+                'newCases': day.newcases,
+                'newDeaths': day.newdeaths
             }
             result.append(current_date)
 
