@@ -60,6 +60,8 @@ class TestDataSusServices(TestCase):
             self.assertIn('date', current_date.keys())
             self.assertIn('totalCases', current_date.keys())
             self.assertIn('totalDeaths', current_date.keys())
+            self.assertIn('newCases', current_date.keys())
+            self.assertIn('newDeaths', current_date.keys())
 
     def test_sus_graphs_total_cases(self):
         yesterday = datetime.date.today() - datetime.timedelta(days=1)
